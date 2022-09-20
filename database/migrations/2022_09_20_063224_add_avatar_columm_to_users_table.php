@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddConfirmedColumnsToUsers extends Migration
+class AddAvatarColummToUsersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,7 @@ class AddConfirmedColumnsToUsers extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->boolean('confirmed')->default('0');
+            $table->string('avatar')->nullable();
         });
     }
 
@@ -26,7 +26,7 @@ class AddConfirmedColumnsToUsers extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('confirmed');
+            $table->dropColumn('avatar');
         });
     }
 }

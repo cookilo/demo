@@ -32,9 +32,7 @@ class UserFactory extends Factory
             'address'           => $this->faker->address,
             'contract'          => $this->faker->text,
             'proficiency'       => $this->faker->text,
-            'salary'            => $this->faker->numberBetween(),
-            'age'               => 26,
-            'confirmed'         => 0,
+            'salary'            => $this->faker->numberBetween()
         ];
     }
 }

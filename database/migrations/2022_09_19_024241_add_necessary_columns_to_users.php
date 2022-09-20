@@ -14,12 +14,12 @@ class AddNecessaryColumnsToUsers extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->integer('post_code', false,true);
-            $table->string('address');
-            $table->longText('contract');
-            $table->mediumText('proficiency');
-            $table->unsignedInteger('salary');
-            $table->unsignedTinyInteger('age');
+            $table->integer('post_code', false,true)->nullable();
+            $table->string('address')->nullable();
+            $table->longText('contract')->nullable();
+            $table->mediumText('proficiency')->nullable();
+            $table->unsignedInteger('salary')->nullable();
+            $table->date('date_of_birth')->nullable();
         });
     }
 
@@ -36,7 +36,7 @@ class AddNecessaryColumnsToUsers extends Migration
             $table->dropColumn('contract');
             $table->dropColumn('proficiency');
             $table->dropColumn('salary');
-            $table->dropColumn('age');
+            $table->dropColumn('date_of_birth');
         });
     }
 }

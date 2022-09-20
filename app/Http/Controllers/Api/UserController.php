@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Requests\Api\UpdateProfileRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\Response;
 
 class UserController extends AuthController
@@ -30,7 +31,13 @@ class UserController extends AuthController
     {
         if (!empty(Auth::user()->confirmed)) return $this->responseError(Response::HTTP_BAD_REQUEST, __('message.permission'), new \stdClass());
 
-        $user = $this->userRepository->update($request->all(), Auth::id());
+        $data = $request->all();
+        if ($request->has('avatar')) {
+            $file = $request->file('avatar');
+            $fileName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME) . '_' . time() . '.' . $file->extension();
+            $data['avatar'] = env('APP_URL') . '/storage/' . Storage::disk("public")->putFileAs('/', $file, $fileName);
+        }
+        $user = $this->userRepository->update($data, Auth::id());
         return $this->responseSuccess(Response::HTTP_ACCEPTED, $user);
     }
 }
