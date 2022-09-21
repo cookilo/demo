@@ -3,8 +3,10 @@
 namespace App\Repositories;
 
 use App\Models\User;
+use Illuminate\Support\Facades\Storage;
 use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
+use Prettus\Validator\Exceptions\ValidatorException;
 
 /**
  * Class UserRepositoryEloquent.
@@ -44,5 +46,12 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
     public function findUserWithRole($id)
     {
         return $this->with('roles')->find($id);
+    }
+
+    public function getUrlAvatar($file)
+    {
+        $fileName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME) . '_' . time() . '.' . $file->extension();
+        return Storage::disk("public")->putFileAs('/', $file, $fileName);
+
     }
 }

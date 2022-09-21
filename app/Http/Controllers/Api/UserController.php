@@ -30,12 +30,9 @@ class UserController extends AuthController
     public function update(UpdateProfileRequest $request): JsonResponse
     {
         if (!empty(Auth::user()->confirmed)) return $this->responseError(Response::HTTP_BAD_REQUEST, __('message.permission'), new \stdClass());
-
         $data = $request->all();
         if ($request->has('avatar')) {
-            $file = $request->file('avatar');
-            $fileName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME) . '_' . time() . '.' . $file->extension();
-            $data['avatar'] = env('APP_URL') . '/storage/' . Storage::disk("public")->putFileAs('/', $file, $fileName);
+            $data['avatar'] = $this->userRepository->getUrlAvatar($request->file('avatar'));
         }
         $user = $this->userRepository->update($data, Auth::id());
         return $this->responseSuccess(Response::HTTP_ACCEPTED, $user);
