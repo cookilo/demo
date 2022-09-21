@@ -28,10 +28,9 @@ class StoreProfileRequest extends BaseRequest
             'email'         => 'required|string|email|max:100|unique:users',
             'post_code'     => 'required|integer|digits:6',
             'address'       => 'required|string',
-            'age'           => 'required|integer|min:1|max:3',
             'proficiency'   => 'required|string',
             'contract'      => 'required|string',
-            'salary'        => 'required|integer|max:9'
+            'salary'        => 'required|integer|digits:9'
         ];
     }
 }

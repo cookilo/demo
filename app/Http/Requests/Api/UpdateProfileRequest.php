@@ -27,10 +27,9 @@ class UpdateProfileRequest extends BaseRequest
             'name' => 'string',
             'post_code' => 'integer|digits:6',
             'address' => 'string',
-            'age' => 'integer|max:99',
             'proficiency'   => 'string',
             'contract'      => 'string',
-            'salary'        => 'integer|max:9',
+            'salary'        => 'integer|digits:9',
             'file'          => 'mimes:jpeg,jpg,png,jpeg,gif|max:10000',
         ];
     }
