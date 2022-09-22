@@ -48,6 +48,7 @@ class UserController extends AuthController
             $data['avatar'] = $this->userRepository->getUrlAvatar($request->file('avatar'));
         }
         $user = $this->userRepository->create($data);
+        $user->assignRole('user');
         return $this->responseSuccess(Response::HTTP_CREATED, $user);
     }
 
