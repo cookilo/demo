@@ -24,13 +24,14 @@ class UpdateProfileRequest extends BaseRequest
     public function rules(): array
     {
         return [
-            'name' => 'string',
-            'post_code' => 'integer|digits:6',
-            'address' => 'string',
-            'proficiency'   => 'string',
-            'contract'      => 'string',
-            'salary'        => 'integer|digits:9',
-            'file'          => 'mimes:jpeg,jpg,png,jpeg,gif|max:10000',
+            'name'              => 'string',
+            'post_code'         => 'integer|digits:6',
+            'address'           => 'string',
+            'proficiency'       => 'string',
+            'contract'          => 'string',
+            'salary'            => 'integer|digits:9',
+            'avatar'            => 'mimes:jpeg,jpg,png,jpeg,gif|max:10000',
+            'date_of_birth'     => 'date_format:Y-m-d',
         ];
     }
 }
