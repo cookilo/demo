@@ -21,5 +21,5 @@ Compile all the front-end stuff:
 
 Account Default:
 
-    user: admin
+    user: admin@admin.com
     password: 123456
