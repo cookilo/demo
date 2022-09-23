@@ -1,0 +1,116 @@
+<script setup>
+import sww from 'sweetalert2';
+import { getUserProfileByID, deleteUser, getUsers } from "../api/user";
+</script>
+
+<template>
+    <div class="about">
+        <div class="text-end"><button type="button" class="btn btn-primary" @click="addUser()">Add new user</button>
+        </div>
+        <table class="table table-striped text-center">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Avatar</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Address</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="user in this.$store.state.users" :key="user.id">
+                    <th scope="row">{{user.id}}</th>
+                    <td>
+                        <img v-if="!user.avatar" class="img-avatar" src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg" alt="" />
+                        <img v-if="user.avatar" class="img-avatar" :src="process.env.MIX_API_URL + `/storage/${user.avatar}`" alt="" />
+
+                    </td>
+                    <td>{{user.name}}</td>
+                    <td>{{user.address}}</td>
+                    <td>
+                        <div class="actions-user">
+                            <div @click="remoteUserByID(user.id)" class="ac-user"><img class="img-user-action" src="../assets/img/remove.png" alt=""></div>
+                            <div @click="editProfileUserById(user.id)" class="ac-user"><img class="img-user-action" src="../assets/img/user-avatar.png" alt=""></div>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</template>
+<script>
+export default {
+    setup() {
+
+    },
+    mounted() {
+        if (!this.$store.state.authenticated) {
+            this.$router.replace({ name: "home" });
+        }
+
+    },
+    methods: {
+        editProfileUserById: function (id) {
+
+            getUserProfileByID(id).then(data => {
+                this.$store.state.profileUserByID = data.data
+                this.$router.replace({ name: "editprofileuser" });
+            })
+        },
+
+        addUser: function () {
+            this.$router.replace({ name: "adduser" });
+        },
+
+        remoteUserByID: function(id){
+            sww.fire({
+                title: 'Do you want delete user?',
+                showCancelButton: true
+            }).then(r =>{
+                console.log('-----r: ', r);
+                if(r.isConfirmed){
+                    deleteUser(id).then(data => {
+                        if(data.status === true){
+                            getUsers().then(data => {
+                                this.$store.state.users = data.data.data
+                            })
+                        }
+                    })
+                }
+            })
+
+
+        }
+    }
+}
+</script>
+<style scoped>
+.actions-user{
+    display: flex;
+    justify-content: center;
+}
+.ac-user{
+    width: 40px;
+    height: 40px;
+    margin: 0 5px;
+    cursor: pointer;
+}
+.img-user-action{
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+.img-avatar {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.about {
+    text-align: left;
+    width: 85%;
+    margin: 0 auto;
+}
+</style>
+
