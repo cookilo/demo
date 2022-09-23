@@ -30,7 +30,7 @@ class StoreProfileRequest extends BaseRequest
             'salary'            => 'nullable|integer|digits:9',
             'avatar'            => 'nullable|mimes:jpeg,jpg,png,jpeg,gif|max:10000',
             'date_of_birth'     => 'nullable|date_format:Y-m-d|before:today',
-            'password'          => 'required|string|confirmed|min:6|regex:/^(?=.*[a-z])(?=.*[A-Z]).+$/',
+            'password'          => 'required|string|min:6|regex:/^(?=.*[a-z])(?=.*[A-Z]).+$/',
         ];
     }
 }
