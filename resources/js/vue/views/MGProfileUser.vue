@@ -1,4 +1,5 @@
 <script setup>
+const api_endpoint = process.env.APP_URL;
 import { updateProfileUserById, getUsers } from "../api/user";
 </script>
 
@@ -11,7 +12,7 @@ import { updateProfileUserById, getUsers } from "../api/user";
                         <img v-if="!this.$store.state.profileUserByID.avatar" class="rounded-circle mt-5" width="150px"
                             src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg" />
                         <img v-if="this.$store.state.profileUserByID.avatar" class="rounded-circle mt-5" width="150px"
-                            :src="process.env.MIX_API_URL + `/storage/${this.$store.state.profileUserByID.avatar}`" />
+                            :src="`${api_endpoint}/storage/${this.$store.state.profileUserByID.avatar}`" />
                         <span class="text-black-50">{{this.$store.state.profileUserByID.email}}</span>
                     </div>
                 </div>
@@ -21,31 +22,31 @@ import { updateProfileUserById, getUsers } from "../api/user";
                             <h4 class="text-right">Profile Settings</h4>
                         </div>
                         <div class="col-md-12">
-                            <label class="labels">Name</label><input id="name" type="text" class="form-control"
+                            <label for="name" class="labels">Name</label><input id="name" type="text" class="form-control"
                                 placeholder="enter Postcode" v-model="body.name" />
                         </div>
                         <div class="col-md-12">
-                            <label class="labels">Postcode</label><input id="post_code" type="text" class="form-control"
+                            <label for="post_code" class="labels">Postcode</label><input id="post_code" type="text" class="form-control"
                                 placeholder="enter Postcode" v-model="body.post_code" />
                         </div>
                         <div class="col-md-12">
-                            <label class="labels">salary</label><input id="salary" type="text" class="form-control"
+                            <label for="salary" class="labels">salary</label><input id="salary" type="text" class="form-control"
                                 placeholder="enter salary" v-model="body.salary" />
                         </div>
                         <div class="col-md-12">
-                            <label class="labels">date of birth</label><input id="date_of_birth" type="text"
+                            <label for="date_of_birth" class="labels">date of birth</label><input id="date_of_birth" type="text"
                                 class="form-control" placeholder="enter date of birth" v-model="body.date_of_birth" />
                         </div>
                         <div class="row mt-3">
                             <div class="col-md-12">
-                                <label class="labels">Address</label><textarea id="address" type="text"
+                                <label for="address" class="labels">Address</label><textarea id="address" type="text"
                                     class="form-control" placeholder="enter phone number"
                                     v-model="body.address"></textarea>
                             </div>
                         </div>
                         <div class="row mt-3">
                                 <div class="col-md-12">
-                                    <label class="labels">Avatar</label>
+                                    <label for="avatar" class="labels">Avatar</label>
                                     <input id="avatar" @change="onFileSelected" name="avatar" type="file" class="form-control"/>
                             </div>
                         </div>
@@ -62,12 +63,12 @@ import { updateProfileUserById, getUsers } from "../api/user";
                         </div>
                         <br />
                         <div class="col-md-12">
-                            <label class="labels">proficiency</label><textarea id="proficiency" type="text"
+                            <label for="proficiency" class="labels">proficiency</label><textarea id="proficiency" type="text"
                                 class="form-control skill" placeholder="experience" v-model="body.proficiency" />
                         </div>
                         <br />
                         <div class="col-md-12">
-                            <label class="labels">Contract Details</label><textarea id="contract" name="contract"
+                            <label for="contract" class="labels">Contract Details</label><textarea id="contract" name="contract"
                                 type="text" class="form-control labo" placeholder="additional details"
                                 v-model="body.contract" />
                         </div>
@@ -76,7 +77,8 @@ import { updateProfileUserById, getUsers } from "../api/user";
 
             </div>
             <div class="mt-5 text-center">
-                <label for="">Show checkbox</label>
+                <label v-if="this.$store.state.profileUserByID.confirmed == 0" for="confirmed">Verification</label>
+                <label v-if="this.$store.state.profileUserByID.confirmed == 1" for="confirmed">Un verification</label>
                 <input class="cfm-au" type="checkbox" name="confirmed" id="confirmed" v-model="body.confirmed">
                 <button @click="updateProfileUserbyIDAdmin(this.$store.state.profileUserByID.id)"
                     class="btn btn-primary profile-button ml-5" type="button">
@@ -114,11 +116,6 @@ export default {
     },
     methods: {
         updateProfileUserbyIDAdmin: function (id,) {
-            if (this.body.confirmed) {
-                this.body.confirmed = 1;
-            } else {
-                this.body.confirmed = 0;
-            }
             updateProfileUserById(id, this.body, this.selectedFile).then(data => {
                 if(data.status){
                     getUsers().then(data => {

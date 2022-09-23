@@ -10,7 +10,7 @@ import { addUser, getUsers } from "../api/user";
                     <div class="d-flex flex-column align-items-center text-center p-3 py-5">
                         <img class="rounded-circle mt-5" width="150px"
                             src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg" />
-                        <span class="text-black-50">edogaru@mail.com.my</span><span> </span>
+                        <!-- <span class="text-black-50">edogaru@mail.com.my</span><span> </span> -->
                     </div>
                 </div>
                 <div class="col-md-5 border-right">
@@ -20,35 +20,39 @@ import { addUser, getUsers } from "../api/user";
                         </div>
                         <div class="row mt-3">
                             <div class="col-md-12">
-                                <label class="labels">Name</label><input id="name" type="text" class="form-control"
-                                    placeholder="enter name" v-model="body.name" />
+                                <label for="name" class="labels">Name</label><input id="name" type="text" class="form-control"
+                                    placeholder="Enter name" v-model="body.name" />
                             </div>
                             <div class="col-md-12">
-                                <label class="labels">Email</label>
-                                <input id="email" type="text" class="form-control" placeholder="enter email" v-model="body.email" />
+                                <label for="email" class="labels">Email</label>
+                                <input id="email" type="text" class="form-control" placeholder="Enter email" v-model="body.email" />
                             </div>
                             <div class="col-md-12">
-                                <label class="labels">Password</label><input id="password" type="password"
-                                    class="form-control" placeholder="enter password" v-model="body.password" />
+                                <label for="password" class="labels">Password</label><input id="password" type="password"
+                                    class="form-control" placeholder="Enter password" v-model="body.password" />
                             </div>
                             <div class="col-md-12">
-                                <label class="labels">Address Line 1</label><textarea id="address" type="text"
-                                    class="form-control" placeholder="enter address line 1" v-model="body.address" />
+                                <label for="password_confirmation" class="labels">Comfirm password</label><input id="password_confirmation" type="password"
+                                    class="form-control" placeholder="Comfirm password" v-model="body.password_confirmation" />
                             </div>
                             <div class="col-md-12">
-                                <label class="labels">Postcode</label><input id="post_code" type="text"
-                                    class="form-control" placeholder="enter Postcode" v-model="body.post_code" />
+                                <label for="address" class="labels">Address Line 1</label><textarea id="address" type="text"
+                                    class="form-control" placeholder="Enter address line 1" v-model="body.address" />
+                            </div>
+                            <div class="col-md-12">
+                                <label for="post_code" class="labels">Postcode</label><input id="post_code" type="text"
+                                    class="form-control" placeholder="Enter Postcode" v-model="body.post_code" />
                             </div>
                             <div class="col-md-12">
                                 <label class="labels">Date of birth</label>
                                 <Datepicker :enableTimePicker="false"  v-model="body.date_of_birth"></Datepicker>
                             </div>
                             <div class="col-md-12">
-                                <label class="labels">Salary</label><input id="salary" type="text" class="form-control"
-                                    placeholder="enter money" v-model="body.salary" />
+                                <label for="salary" class="labels">Salary</label><input id="salary" type="text" class="form-control"
+                                    placeholder="Enter money" v-model="body.salary" />
                             </div>
                             <div class="col-md-12">
-                                <label class="labels">Avatar</label><input id="avatar" @change="onFileSelected" name="avatar" type="file" class="form-control"/>
+                                <label for="avatar" class="labels">Avatar</label><input id="avatar" @change="onFileSelected" name="avatar" type="file" class="form-control"/>
                             </div>
                         </div>
                     </div>
@@ -64,13 +68,13 @@ import { addUser, getUsers } from "../api/user";
                         </div>
                         <br />
                         <div class="col-md-12">
-                            <label class="labels">Proficiency</label><textarea id="proficiency" type="text"
-                                class="form-control skill" placeholder="experience" v-model="body.proficiency" />
+                            <label for="proficiency" class="labels">Proficiency</label><textarea id="proficiency" type="text"
+                                class="form-control skill" placeholder="Enter proficiency" v-model="body.proficiency" />
                         </div>
                         <br />
                         <div class="col-md-12">
-                            <label class="labels">Contract details</label><textarea id="contract" type="text"
-                                class="form-control labo" placeholder="additional details" v-model="body.contract" />
+                            <label for="contract" class="labels">Contract details</label><textarea id="contract" type="text"
+                                class="form-control labo" placeholder="Enter contract" v-model="body.contract" />
                         </div>
                     </div>
                 </div>
@@ -81,7 +85,7 @@ import { addUser, getUsers } from "../api/user";
                 </button>
             </div>
             <div v-if="messErr" class="mess-err-add mt-3 text-center">
-                <div v-for="(err,i) of messErr" :key="i" class="mes-err">{{err[0]}}</div>
+                <div v-for="err,i in messErr" :key="i" class="mes-err">{{err}}</div>
             </div>
         </div>
     </div>
@@ -97,15 +101,16 @@ export default {
     data() {
         return {
             body: {
-                name: '',
-                email: '',
-                password: '',
-                post_code: '',
-                address: '',
-                proficiency: '',
-                contract: '',
-                salary: '',
-                date_of_birth: '',
+                name: null,
+                email: null,
+                password: null,
+                password_confirmation: null,
+                post_code: null,
+                address: null,
+                proficiency: null,
+                contract: null,
+                salary: null,
+                date_of_birth: null,
             },
             messErr: null,
             selectedFile: null,
@@ -120,8 +125,7 @@ export default {
     methods: {
         addNewUser: function () {
             var dateCus = null;
-            console.log(this.body.date_of_birth,'-:this.body.date_of_birth: ', typeof this.body.date_of_birth);
-            if(typeof this.body.date_of_birth === 'object'){
+            if(this.body.date_of_birth && typeof this.body.date_of_birth === 'object'){
                 var day = this.body.date_of_birth.getDate().toString();
                 var mon = (this.body.date_of_birth.getMonth()+1).toString();
                 var y = this.body.date_of_birth.getFullYear().toString();
@@ -134,12 +138,11 @@ export default {
                 }
                 dateCus = `${y}-${mon}-${day}`;
             }
-            if(typeof this.body.date_of_birth === 'string'){
+            if(this.body.date_of_birth){
                 if(this.body.date_of_birth.length){
                     dateCus = this.body.date_of_birth;
                 }
             }
-            console.log('--------dateCus--------: ', dateCus);
 
             addUser(this.body, this.selectedFile, dateCus).then(data => {
                 if(data.status === true){
@@ -148,8 +151,14 @@ export default {
                         this.$store.state.users = data.data.data
                     })
                 }
+                
                 if(data.status === 'error'){
-                    this.messErr = data.data;
+                    var k = data.data[0];
+                    var arrMesErr = [];
+                    for (const [key, value] of Object.entries(k)) {
+                        arrMesErr.push(...value)
+                    }
+                    this.messErr = arrMesErr;
                 }
             })
         },
@@ -237,8 +246,11 @@ body {
 .mess-err-add {
     width: 35%;
     margin: 0 auto;
-    border: 1px #030303 solid;
+    border: 1px #fa3a3a  solid;
     border-radius: 5px;
     padding: 5px;
+}
+.mes-err{
+    color: #fa3a3a;
 }
 </style>

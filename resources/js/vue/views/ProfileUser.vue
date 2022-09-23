@@ -1,4 +1,5 @@
 <script setup>
+const api_endpoint = process.env.APP_URL;
 import { updateProfileUserByUser, getUserProfile } from "../api/user";
 import sww from 'sweetalert2';
 </script>
@@ -12,7 +13,7 @@ import sww from 'sweetalert2';
                         <img v-if="!this.$store.state.profileUser.avatar" class="rounded-circle mt-5" width="150px"
                             src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg" />
                         <img v-if="this.$store.state.profileUser.avatar" class="rounded-circle mt-5" width="150px"
-                            :src="process.env.MIX_API_URL + `/storage/${this.$store.state.profileUser.avatar}`" />
+                            :src="`${api_endpoint}/storage/${this.$store.state.profileUser.avatar}`" />
                         <span class="text-black-50">{{this.$store.state.profileUser.email}}</span>
                     </div>
                 </div>
@@ -22,32 +23,32 @@ import sww from 'sweetalert2';
                             <h4 class="text-right">Profile Settings</h4>
                         </div>
                         <div class="col-md-12">
-                            <label class="labels">Name</label><input type="text" :class="{'none-active-input':this.$store.state.profileUser.confirmed !==0}" class="form-control"
+                            <label for="name" class="labels">Name</label><input id="name" type="text" :class="{'none-active-input':this.$store.state.profileUser.confirmed !==0}" class="form-control"
                                 placeholder="enter Postcode" v-model="body.name" />
                         </div>
                         <div class="col-md-12">
-                            <label class="labels">Postcode</label><input type="text" :class="{'none-active-input':this.$store.state.profileUser.confirmed !==0}" class="form-control"
+                            <label for="post_code" class="labels">Postcode</label><input id="post_code" type="text" :class="{'none-active-input':this.$store.state.profileUser.confirmed !==0}" class="form-control"
                                 placeholder="enter Postcode" v-model="body.post_code" />
                         </div>
                         <div class="col-md-12">
-                            <label class="labels">salary</label><input type="text" :class="{'none-active-input':this.$store.state.profileUser.confirmed !==0}" class="form-control"
+                            <label for="salary" class="labels">salary</label><input id="salary" type="text" :class="{'none-active-input':this.$store.state.profileUser.confirmed !==0}" class="form-control"
                                 placeholder="enter salary" v-model="body.salary" />
                         </div>
                         <div class="col-md-12">
-                            <label class="labels">date of birth</label><input type="text" :class="{'none-active-input':this.$store.state.profileUser.confirmed !==0}" class="form-control"
+                            <label for="date_of_birth" class="labels">date of birth</label><input id="date_of_birth" type="text" :class="{'none-active-input':this.$store.state.profileUser.confirmed !==0}" class="form-control"
                                 placeholder="enter date of birth"
                                 v-model="body.date_of_birth" />
                         </div>
                         <div class="row mt-3">
                             <div class="col-md-12">
-                                <label class="labels">Address</label><textarea type="text" :class="{'none-active-input':this.$store.state.profileUser.confirmed !==0}" class="form-control"
+                                <label for="address" class="labels">Address</label><textarea type="text" :class="{'none-active-input':this.$store.state.profileUser.confirmed !==0}" class="form-control"
                                     placeholder="enter address"
-                                    v-model="body.address"></textarea>
+                                    v-model="body.address" id="address"></textarea>
                             </div>
                         </div>
                         <div class="col-md-12">
-                            <label class="labels">Avatar</label>
-                            <input id="avatar" @change="onFileSelected" name="avatar" type="file" :class="{'none-active-input':this.$store.state.profileUser.confirmed !==0}" class="form-control"/>
+                            <label for="avatar" class="labels">Avatar</label>
+                            <input  id="avatar" @change="onFileSelected" name="avatar" type="file" :class="{'none-active-input':this.$store.state.profileUser.confirmed !==0}" class="form-control"/>
                         </div>
                     </div>
                 </div>
@@ -62,16 +63,18 @@ import sww from 'sweetalert2';
                         </div>
                         <br />
                         <div class="col-md-12">
-                            <label class="labels">proficiency</label><textarea type="text"
+                            <label for="confirmed" class="labels">proficiency</label><textarea type="text"
                                 :class="{'none-active-input':this.$store.state.profileUser.confirmed !==0}"
                                 class="form-control skill"
+                                id="confirmed"
                                 placeholder="experience" v-model="body.proficiency" />
                         </div>
                         <br />
                         <div class="col-md-12">
-                            <label class="labels">Contract Details</label><textarea type="text"
+                            <label for="contract" class="labels">Contract Details</label><textarea type="text"
                                 :class="{'none-active-input':this.$store.state.profileUser.confirmed !==0}"
                                 class="form-control labo" placeholder="additional details"
+                                id="contract"
                                 v-model="body.contract" />
                         </div>
                     </div>
@@ -79,7 +82,7 @@ import sww from 'sweetalert2';
 
             </div>
             <div v-if="this.$store.state.profileUser.confirmed===0" class="mt-5 text-center">
-                <label for="">Comfirrm Profile</label>
+                <label for="confirmed">Verification</label>
                 <input class="cfm-au" type="checkbox" name="confirmed" id="confirmed" v-model="body.confirmed">
                 <button @click="updateUserByUser()" class="btn btn-primary profile-button ml-3" type="button">
                     Save Profile
@@ -116,11 +119,6 @@ export default {
     },
     methods: {
         updateUserByUser: function(){
-            if (this.body.confirmed) {
-                this.body.confirmed = 1;
-            } else {
-                this.body.confirmed = 0;
-            }
             updateProfileUserByUser(this.body, this.selectedFile).then(data => {
                 getUserProfile().then(data => {
                     this.$store.state.profileUser = data.data

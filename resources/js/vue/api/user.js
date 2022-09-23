@@ -1,5 +1,5 @@
 import axios from 'axios';
-
+const api_endpoint = process.env.MIX_API_URL;
 function getHeader(){
     return  {
             Accept: 'application/json',
@@ -12,7 +12,6 @@ function getHeader(){
 function getHeader1(){
     return  {
             Accept: 'application/json',
-            'Content-Type': 'application/json',
             authorization: 'bearer ' + sessionStorage.getItem('tk'),
             'Cache-Control': 'no-cache',
             "Content-Type": "multipart/form-data",
@@ -22,7 +21,7 @@ function getHeader1(){
 export const getUsers = async () => {
     return axios({
         method: 'get',
-        url: process.env.MIX_API_URL + '/api/admin/profile',
+        url: `${api_endpoint}/api/admin/profile`,
         headers: getHeader(),
     })
         .then(res => {
@@ -33,7 +32,7 @@ export const getUsers = async () => {
 export const singin = async (email, password) => {
     return axios({
         method: "post",
-        url: process.env.MIX_API_URL + "/api/auth/login",
+        url: `${api_endpoint}/api/auth/login`,
         data: {email,password}
     })
         .then(function (response) {
@@ -48,7 +47,7 @@ export const singin = async (email, password) => {
 export const getUserProfile = async () => {
     return axios({
         method: "get",
-        url: process.env.MIX_API_URL + "/api/profile" ,
+        url: `${api_endpoint}/api/profile`,
         headers: getHeader(),
     })
         .then(function (response) {
@@ -63,7 +62,7 @@ export const getUserProfile = async () => {
 export const getUserProfileByID = async (id) => {
     return axios({
         method: "get",
-        url: process.env.MIX_API_URL + `/api/admin/profile/${id}`,
+        url: `${api_endpoint}/api/admin/profile/${id}`,
         headers: getHeader(),
     })
         .then(function (response) {
@@ -76,6 +75,11 @@ export const getUserProfileByID = async (id) => {
 }
 
 export const updateProfileUserById = async (id, body, avt) => {
+    if (body.confirmed) {
+        body.confirmed = 1;
+    } else {
+        body.confirmed = 0;
+    }
     if(avt){
         const fd = new FormData();
         fd.append('image',avt)
@@ -86,7 +90,7 @@ export const updateProfileUserById = async (id, body, avt) => {
     }
     return axios({
         method: "post",
-        url: process.env.MIX_API_URL + `/api/admin/profile/${id}`,
+        url: `${api_endpoint}/api/admin/profile/${id}`,
         headers: getHeader1(),
         data: {
             ...body
@@ -115,7 +119,7 @@ export const addUser = async (body, avt, date) => {
 
     return axios({
         method: "post",
-        url: process.env.MIX_API_URL + "/api/admin/profile",
+        url: `${api_endpoint}/api/admin/profile`,
         headers: getHeader1(),
         data: {
             ...body
@@ -132,7 +136,7 @@ export const addUser = async (body, avt, date) => {
 export const deleteUser = async (id) => {
     return axios({
         method: "delete",
-        url: process.env.MIX_API_URL + "/api/admin/profile/" + id,
+        url: `${api_endpoint}/api/admin/profile/${id}`,
         headers: getHeader(),
     })
         .then(function (response) {
@@ -145,20 +149,26 @@ export const deleteUser = async (id) => {
 
 
 export const updateProfileUserByUser = async (body, avt) => {
+    const data = body
+    if (data.confirmed) {
+        data.confirmed = 1;
+        } else {
+            data.confirmed = 0;
+        }
     if(avt){
         const fd = new FormData();
         fd.append('image',avt)
-        body.avatar = avt;
+        data.avatar = avt;
     }
-    if(!body.date_of_birth){
-        delete body.date_of_birth
+    if(!data.date_of_birth){
+        delete data.date_of_birth
     }
     return axios({
         method: "post",
-        url: process.env.MIX_API_URL + "/api/profile",
+        url: `${api_endpoint}/api/profile`,
         headers: getHeader1(),
         data: {
-            ...body
+            ...data
         }
     })
         .then(function (response) {

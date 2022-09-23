@@ -55,7 +55,7 @@ import { singin, getUsers, getUserProfile } from "./api/user";
                 </button>
                 </div>
             </div>
-            <div class="mess-err">A username and password must be present</div>
+            <div v-if="messErr" class="mess-err">{{messErr}}</div>
             </div>
         </div>
         <RouterView @authenticated="setAuthenticated"/>
@@ -70,11 +70,12 @@ export default {
     },
     data() {
         return {
-        authenticated: false,
-        input: {
-            username: "",
-            password: "",
-        },
+            authenticated: false,
+            input: {
+                username: "",
+                password: "",
+            },
+            messErr: null,
         };
     },
     methods: {
@@ -88,6 +89,9 @@ export default {
         login() {
         if (this.input.username != "" && this.input.password != "") {
             singin(this.input.username, this.input.password).then((data) => {
+                if(data.code !== 202){
+                    this.messErr = data.message;
+                }
                 if (data) {
                     if(data.data.user){
                         if(data.data.user.roles.some(r=> r.name === 'admin')){

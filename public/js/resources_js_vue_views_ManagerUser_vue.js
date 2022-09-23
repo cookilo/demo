@@ -14,6 +14,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! sweetalert2 */ "./node_modules/sweetalert2/dist/sweetalert2.all.js");
 /* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(sweetalert2__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _api_user__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../api/user */ "./resources/js/vue/api/user.js");
+/* provided dependency */ var process = __webpack_require__(/*! process/browser.js */ "./node_modules/process/browser.js");
 var __default__ = {
   setup: function setup() {},
   mounted: function mounted() {
@@ -47,8 +48,6 @@ var __default__ = {
         title: 'Do you want delete user?',
         showCancelButton: true
       }).then(function (r) {
-        console.log('-----r: ', r);
-
         if (r.isConfirmed) {
           (0,_api_user__WEBPACK_IMPORTED_MODULE_0__.deleteUser)(id).then(function (data) {
             if (data.status === true) {
@@ -65,11 +64,13 @@ var __default__ = {
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (/*#__PURE__*/Object.assign(__default__, {
-  name: 'ManagerUser',
+  __name: 'ManagerUser',
   setup: function setup(__props, _ref) {
     var expose = _ref.expose;
     expose();
+    var api_endpoint = process.env.APP_URL;
     var __returned__ = {
+      api_endpoint: api_endpoint,
       sww: (sweetalert2__WEBPACK_IMPORTED_MODULE_1___default()),
       getUserProfileByID: _api_user__WEBPACK_IMPORTED_MODULE_0__.getUserProfileByID,
       deleteUser: _api_user__WEBPACK_IMPORTED_MODULE_0__.deleteUser,
@@ -97,8 +98,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "render": () => (/* binding */ render)
 /* harmony export */ });
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
-/* harmony import */ var _assets_img_remove_png__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../assets/img/remove.png */ "./resources/js/vue/assets/img/remove.png");
-/* harmony import */ var _assets_img_user_avatar_png__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../assets/img/user-avatar.png */ "./resources/js/vue/assets/img/user-avatar.png");
+/* harmony import */ var _assets_img_user_avatar_png__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../assets/img/user-avatar.png */ "./resources/js/vue/assets/img/user-avatar.png");
+/* harmony import */ var _assets_img_remove_png__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../assets/img/remove.png */ "./resources/js/vue/assets/img/remove.png");
 
 
 
@@ -151,7 +152,7 @@ var _hoisted_9 = ["onClick"];
 var _hoisted_10 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
     "class": "img-user-action",
-    src: _assets_img_remove_png__WEBPACK_IMPORTED_MODULE_1__["default"],
+    src: _assets_img_user_avatar_png__WEBPACK_IMPORTED_MODULE_1__["default"],
     alt: ""
   }, null, -1
   /* HOISTED */
@@ -164,7 +165,7 @@ var _hoisted_12 = ["onClick"];
 var _hoisted_13 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
     "class": "img-user-action",
-    src: _assets_img_user_avatar_png__WEBPACK_IMPORTED_MODULE_2__["default"],
+    src: _assets_img_remove_png__WEBPACK_IMPORTED_MODULE_2__["default"],
     alt: ""
   }, null, -1
   /* HOISTED */
@@ -187,7 +188,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [!user.avatar ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("img", _hoisted_6)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), user.avatar ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("img", {
       key: 1,
       "class": "img-avatar",
-      src: _ctx.process.env.MIX_API_URL + "/storage/".concat(user.avatar),
+      src: "".concat($setup.api_endpoint, "/storage/").concat(user.avatar),
       alt: ""
     }, null, 8
     /* PROPS */
@@ -197,14 +198,14 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     /* TEXT */
     ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
       onClick: function onClick($event) {
-        return $options.remoteUserByID(user.id);
+        return $options.editProfileUserById(user.id);
       },
       "class": "ac-user"
     }, _hoisted_11, 8
     /* PROPS */
     , _hoisted_9), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
       onClick: function onClick($event) {
-        return $options.editProfileUserById(user.id);
+        return $options.remoteUserByID(user.id);
       },
       "class": "ac-user"
     }, _hoisted_14, 8
@@ -4463,7 +4464,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _ManagerUser_vue_vue_type_template_id_4c022c00_scoped_true__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ManagerUser.vue?vue&type=template&id=4c022c00&scoped=true */ "./resources/js/vue/views/ManagerUser.vue?vue&type=template&id=4c022c00&scoped=true");
 /* harmony import */ var _ManagerUser_vue_vue_type_script_setup_true_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ManagerUser.vue?vue&type=script&setup=true&lang=js */ "./resources/js/vue/views/ManagerUser.vue?vue&type=script&setup=true&lang=js");
 /* harmony import */ var _ManagerUser_vue_vue_type_style_index_0_id_4c022c00_scoped_true_lang_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./ManagerUser.vue?vue&type=style&index=0&id=4c022c00&scoped=true&lang=css */ "./resources/js/vue/views/ManagerUser.vue?vue&type=style&index=0&id=4c022c00&scoped=true&lang=css");
-/* harmony import */ var C_laragon_www_project_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
+/* harmony import */ var C_laragon_www_demo_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
 
 
 
@@ -4471,7 +4472,7 @@ __webpack_require__.r(__webpack_exports__);
 ;
 
 
-const __exports__ = /*#__PURE__*/(0,C_laragon_www_project_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__["default"])(_ManagerUser_vue_vue_type_script_setup_true_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_ManagerUser_vue_vue_type_template_id_4c022c00_scoped_true__WEBPACK_IMPORTED_MODULE_0__.render],['__scopeId',"data-v-4c022c00"],['__file',"resources/js/vue/views/ManagerUser.vue"]])
+const __exports__ = /*#__PURE__*/(0,C_laragon_www_demo_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__["default"])(_ManagerUser_vue_vue_type_script_setup_true_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_ManagerUser_vue_vue_type_template_id_4c022c00_scoped_true__WEBPACK_IMPORTED_MODULE_0__.render],['__scopeId',"data-v-4c022c00"],['__file',"resources/js/vue/views/ManagerUser.vue"]])
 /* hot reload */
 if (false) {}
 

@@ -12,6 +12,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _api_user__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../api/user */ "./resources/js/vue/api/user.js");
+/* provided dependency */ var process = __webpack_require__(/*! process/browser.js */ "./node_modules/process/browser.js");
 var __default__ = {
   name: "MGProfileUser",
   data: function data() {
@@ -41,12 +42,6 @@ var __default__ = {
     updateProfileUserbyIDAdmin: function updateProfileUserbyIDAdmin(id) {
       var _this = this;
 
-      if (this.body.confirmed) {
-        this.body.confirmed = 1;
-      } else {
-        this.body.confirmed = 0;
-      }
-
       (0,_api_user__WEBPACK_IMPORTED_MODULE_0__.updateProfileUserById)(id, this.body, this.selectedFile).then(function (data) {
         if (data.status) {
           (0,_api_user__WEBPACK_IMPORTED_MODULE_0__.getUsers)().then(function (data) {
@@ -69,7 +64,9 @@ var __default__ = {
   setup: function setup(__props, _ref) {
     var expose = _ref.expose;
     expose();
+    var api_endpoint = process.env.APP_URL;
     var __returned__ = {
+      api_endpoint: api_endpoint,
       updateProfileUserById: _api_user__WEBPACK_IMPORTED_MODULE_0__.updateProfileUserById,
       getUsers: _api_user__WEBPACK_IMPORTED_MODULE_0__.getUsers
     };
@@ -148,6 +145,7 @@ var _hoisted_12 = {
 
 var _hoisted_13 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
+    "for": "name",
     "class": "labels"
   }, "Name", -1
   /* HOISTED */
@@ -160,6 +158,7 @@ var _hoisted_14 = {
 
 var _hoisted_15 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
+    "for": "post_code",
     "class": "labels"
   }, "Postcode", -1
   /* HOISTED */
@@ -172,6 +171,7 @@ var _hoisted_16 = {
 
 var _hoisted_17 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
+    "for": "salary",
     "class": "labels"
   }, "salary", -1
   /* HOISTED */
@@ -184,6 +184,7 @@ var _hoisted_18 = {
 
 var _hoisted_19 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
+    "for": "date_of_birth",
     "class": "labels"
   }, "date of birth", -1
   /* HOISTED */
@@ -199,6 +200,7 @@ var _hoisted_21 = {
 
 var _hoisted_22 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
+    "for": "address",
     "class": "labels"
   }, "Address", -1
   /* HOISTED */
@@ -214,6 +216,7 @@ var _hoisted_24 = {
 
 var _hoisted_25 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
+    "for": "avatar",
     "class": "labels"
   }, "Avatar", -1
   /* HOISTED */
@@ -247,6 +250,7 @@ var _hoisted_30 = {
 
 var _hoisted_31 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
+    "for": "proficiency",
     "class": "labels"
   }, "proficiency", -1
   /* HOISTED */
@@ -265,6 +269,7 @@ var _hoisted_33 = {
 
 var _hoisted_34 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
+    "for": "contract",
     "class": "labels"
   }, "Contract Details", -1
   /* HOISTED */
@@ -274,15 +279,14 @@ var _hoisted_34 = /*#__PURE__*/_withScopeId(function () {
 var _hoisted_35 = {
   "class": "mt-5 text-center"
 };
-
-var _hoisted_36 = /*#__PURE__*/_withScopeId(function () {
-  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
-    "for": ""
-  }, "Show checkbox", -1
-  /* HOISTED */
-  );
-});
-
+var _hoisted_36 = {
+  key: 0,
+  "for": "confirmed"
+};
+var _hoisted_37 = {
+  key: 1,
+  "for": "confirmed"
+};
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _this = this;
 
@@ -290,7 +294,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     key: 1,
     "class": "rounded-circle mt-5",
     width: "150px",
-    src: _ctx.process.env.MIX_API_URL + "/storage/".concat(this.$store.state.profileUserByID.avatar)
+    src: "".concat($setup.api_endpoint, "/storage/").concat(this.$store.state.profileUserByID.avatar)
   }, null, 8
   /* PROPS */
   , _hoisted_7)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_8, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(this.$store.state.profileUserByID.email), 1
@@ -376,7 +380,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     })
   }, null, 512
   /* NEED_PATCH */
-  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.body.contract]])])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_35, [_hoisted_36, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.body.contract]])])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_35, [this.$store.state.profileUserByID.confirmed == 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("label", _hoisted_36, "Verification")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), this.$store.state.profileUserByID.confirmed == 1 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("label", _hoisted_37, "Un verification")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     "class": "cfm-au",
     type: "checkbox",
     name: "confirmed",
@@ -463,7 +467,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _MGProfileUser_vue_vue_type_template_id_0e4add22_scoped_true__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./MGProfileUser.vue?vue&type=template&id=0e4add22&scoped=true */ "./resources/js/vue/views/MGProfileUser.vue?vue&type=template&id=0e4add22&scoped=true");
 /* harmony import */ var _MGProfileUser_vue_vue_type_script_setup_true_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./MGProfileUser.vue?vue&type=script&setup=true&lang=js */ "./resources/js/vue/views/MGProfileUser.vue?vue&type=script&setup=true&lang=js");
 /* harmony import */ var _MGProfileUser_vue_vue_type_style_index_0_id_0e4add22_scoped_true_lang_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./MGProfileUser.vue?vue&type=style&index=0&id=0e4add22&scoped=true&lang=css */ "./resources/js/vue/views/MGProfileUser.vue?vue&type=style&index=0&id=0e4add22&scoped=true&lang=css");
-/* harmony import */ var C_laragon_www_project_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
+/* harmony import */ var C_laragon_www_demo_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
 
 
 
@@ -471,7 +475,7 @@ __webpack_require__.r(__webpack_exports__);
 ;
 
 
-const __exports__ = /*#__PURE__*/(0,C_laragon_www_project_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__["default"])(_MGProfileUser_vue_vue_type_script_setup_true_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_MGProfileUser_vue_vue_type_template_id_0e4add22_scoped_true__WEBPACK_IMPORTED_MODULE_0__.render],['__scopeId',"data-v-0e4add22"],['__file',"resources/js/vue/views/MGProfileUser.vue"]])
+const __exports__ = /*#__PURE__*/(0,C_laragon_www_demo_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__["default"])(_MGProfileUser_vue_vue_type_script_setup_true_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_MGProfileUser_vue_vue_type_template_id_0e4add22_scoped_true__WEBPACK_IMPORTED_MODULE_0__.render],['__scopeId',"data-v-0e4add22"],['__file',"resources/js/vue/views/MGProfileUser.vue"]])
 /* hot reload */
 if (false) {}
 

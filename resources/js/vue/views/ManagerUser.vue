@@ -1,4 +1,5 @@
 <script setup>
+const api_endpoint = process.env.APP_URL;
 import sww from 'sweetalert2';
 import { getUserProfileByID, deleteUser, getUsers } from "../api/user";
 </script>
@@ -22,15 +23,14 @@ import { getUserProfileByID, deleteUser, getUsers } from "../api/user";
                     <th scope="row">{{user.id}}</th>
                     <td>
                         <img v-if="!user.avatar" class="img-avatar" src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg" alt="" />
-                        <img v-if="user.avatar" class="img-avatar" :src="process.env.MIX_API_URL + `/storage/${user.avatar}`" alt="" />
-
+                        <img v-if="user.avatar" class="img-avatar" :src="`${api_endpoint}/storage/${user.avatar}`" alt="" />
                     </td>
                     <td>{{user.name}}</td>
                     <td>{{user.address}}</td>
                     <td>
                         <div class="actions-user">
-                            <div @click="remoteUserByID(user.id)" class="ac-user"><img class="img-user-action" src="../assets/img/remove.png" alt=""></div>
                             <div @click="editProfileUserById(user.id)" class="ac-user"><img class="img-user-action" src="../assets/img/user-avatar.png" alt=""></div>
+                            <div @click="remoteUserByID(user.id)" class="ac-user"><img class="img-user-action" src="../assets/img/remove.png" alt=""></div>
                         </div>
                     </td>
                 </tr>
@@ -67,7 +67,6 @@ export default {
                 title: 'Do you want delete user?',
                 showCancelButton: true
             }).then(r =>{
-                console.log('-----r: ', r);
                 if(r.isConfirmed){
                     deleteUser(id).then(data => {
                         if(data.status === true){
