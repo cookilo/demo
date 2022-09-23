@@ -25,7 +25,7 @@ class StoreProfileRequest extends BaseRequest
     {
         return [
             'name'              => 'required|string',
-            'email'             => 'required|string|email|max:100|unique:users',
+            'email'             => 'required|string|email|max:100|unique:users,deleted_at,NULL',
             'post_code'         => 'nullable|integer',
             'salary'            => 'nullable|integer',
             'avatar'            => 'nullable|mimes:jpeg,jpg,png,jpeg,gif|max:10000',
