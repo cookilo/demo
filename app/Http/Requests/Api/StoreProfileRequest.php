@@ -26,11 +26,11 @@ class StoreProfileRequest extends BaseRequest
         return [
             'name'              => 'required|string',
             'email'             => 'required|string|email|max:100|unique:users',
-            'post_code'         => 'nullable|integer|digits:6',
-            'salary'            => 'nullable|integer|digits:9',
+            'post_code'         => 'nullable|integer',
+            'salary'            => 'nullable|integer',
             'avatar'            => 'nullable|mimes:jpeg,jpg,png,jpeg,gif|max:10000',
             'date_of_birth'     => 'nullable|date_format:Y-m-d|before:today',
-            'password'          => 'required|string|min:6|regex:/^(?=.*[a-z])(?=.*[A-Z]).+$/',
+            'password'          => 'required|string|confirmed|min:6|regex:/^(?=.*[a-z])(?=.*[A-Z]).+$/',
         ];
     }
 }
