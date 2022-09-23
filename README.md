@@ -17,7 +17,7 @@ Migrate and seed the database:
 
 Compile all the front-end stuff:
 
-    npm run prod
+    npm run dev
 
 Account Default:
 
