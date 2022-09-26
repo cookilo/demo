@@ -29,8 +29,8 @@ class UpdateProfileRequest extends BaseRequest
             'salary'                => 'nullable|integer',
             'avatar'                => 'nullable|mimes:jpeg,jpg,png,jpeg,gif|max:10000',
             'date_of_birth'         => 'nullable|date_format:Y-m-d|before:today',
-            'password'              => 'required|string|required_with:password_confirmation|same:password_confirmation',
-            'password_confirmation' => 'required|string',
+            'password'              => 'string|required_with:password_confirmation|same:password_confirmation',
+            'password_confirmation' => 'string',
         ];
     }
 }
