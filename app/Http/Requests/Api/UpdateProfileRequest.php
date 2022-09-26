@@ -24,7 +24,7 @@ class UpdateProfileRequest extends BaseRequest
     public function rules(): array
     {
         return [
-            'name'                  => 'string',
+            'name'                  => 'required|string',
             'post_code'             => 'nullable|integer',
             'salary'                => 'nullable|integer',
             'avatar'                => 'nullable|mimes:jpeg,jpg,png,jpeg,gif|max:10000',
