@@ -24,13 +24,14 @@ class StoreProfileRequest extends BaseRequest
     public function rules(): array
     {
         return [
-            'name'              => 'required|string',
-            'email'             => 'required|string|email|max:100|unique:users',
-            'post_code'         => 'nullable|integer',
-            'salary'            => 'nullable|integer',
-            'avatar'            => 'nullable|mimes:jpeg,jpg,png,jpeg,gif|max:10000',
-            'date_of_birth'     => 'nullable|date_format:Y-m-d|before:today',
-            'password'          => 'required|min:6',
+            'name'                  => 'required|string',
+            'email'                 => 'required|string|email|unique:users',
+            'post_code'             => 'nullable|integer',
+            'salary'                => 'nullable|integer',
+            'avatar'                => 'nullable|mimes:jpeg,jpg,png,jpeg,gif|max:10000',
+            'date_of_birth'         => 'nullable|date_format:Y-m-d|before:today',
+            'password'              => 'required|string|required_with:password_confirmation|same:password_confirmation',
+            'password_confirmation' => 'required|string',
         ];
     }
 }

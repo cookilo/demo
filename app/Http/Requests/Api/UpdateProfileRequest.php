@@ -24,12 +24,13 @@ class UpdateProfileRequest extends BaseRequest
     public function rules(): array
     {
         return [
-            'name'              => 'nullable|string',
-            'post_code'         => 'nullable|integer',
-            'salary'            => 'nullable|integer',
-            'avatar'            => 'nullable|mimes:jpeg,jpg,png,jpeg,gif|max:10000',
-            'date_of_birth'     => 'nullable|date_format:Y-m-d|before:today',
-            'password'          => 'stringmin:6|regex:/^(?=.*[a-z])(?=.*[A-Z]).+$/',
+            'name'                  => 'nullable|string',
+            'post_code'             => 'nullable|integer',
+            'salary'                => 'nullable|integer',
+            'avatar'                => 'nullable|mimes:jpeg,jpg,png,jpeg,gif|max:10000',
+            'date_of_birth'         => 'nullable|date_format:Y-m-d|before:today',
+            'password'              => 'required|string|required_with:password_confirmation|same:password_confirmation',
+            'password_confirmation' => 'required|string',
         ];
     }
 }
