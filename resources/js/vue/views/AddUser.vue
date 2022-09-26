@@ -81,7 +81,7 @@ const schema = yup.object({
                             <div class="col-md-12">
                                 <label for="salary" class="labels">給料</label>
                                 <!-- <span class="err-mess-validate">*</span> -->
-                                <ErrorMessage class="err-mess-validate ml-3" name="salary" as="span">{{ErrorMessage?'err':''}}</ErrorMessage>
+                                <ErrorMessage class="err-mess-validate ml-3" name="salary" as="span">{{ErrorMessage?'給料は数字で整数です。':''}}</ErrorMessage>
                                 <Field id="salary" name="salary" type="text" class="form-control"
                                     placeholder="給料" v-model="body.salary" />
                             </div>
@@ -133,7 +133,7 @@ const schema = yup.object({
         </div>
     </div>
     </Form>
-    
+
 </template>
 
 
@@ -179,7 +179,7 @@ export default {
                         this.$store.state.users = data.data.data
                     })
                 }
-                
+
                 if(data.status === 'error'){
                     var k = data.data[0];
                     var arrMesErr = [];
