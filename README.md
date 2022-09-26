@@ -1,6 +1,6 @@
 ### Common way
 
-Rename the .env.example file to .env, and fill it with your local info, then:
+Rename the .env.example file to .env, and change APP_URL and MIX_APP_URL in .env file to your local domain, then:
 
 Install PHP and JavaScript dependencies:
 
