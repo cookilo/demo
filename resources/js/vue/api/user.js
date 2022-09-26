@@ -74,18 +74,49 @@ export const getUserProfileByID = async (id) => {
 
 }
 
-export const updateProfileUserById = async (id, body, avt) => {
+function changeConfirmed(body){
+    var cf;
     if (body.confirmed) {
-        body.confirmed = 1;
+        cf = 1;
     } else {
-        body.confirmed = 0;
+        cf = 0;
     }
+    return cf;
+}
+
+export const changeDate = (body) => {
+    var dateCus = null;
+    if(body.date_of_birth && typeof body.date_of_birth === 'object'){
+        var day = body.date_of_birth.getDate().toString();
+        var mon = (body.date_of_birth.getMonth()+1).toString();
+        var y = body.date_of_birth.getFullYear().toString();
+
+        if(day.length === 1 ){
+            day = `0${day}`
+        }
+        if(mon.length === 1 ){
+            mon = `0${mon}`
+        }
+        dateCus = `${y}-${mon}-${day}`;
+    }
+    if(body.date_of_birth){
+        if(body.date_of_birth.length){
+            dateCus = body.date_of_birth;
+        }
+    }
+    return dateCus;
+}
+
+export const updateProfileUserById = async (id, body, avt, date) => {
+    var cf = changeConfirmed(body);
     if(avt){
         const fd = new FormData();
         fd.append('image',avt)
         body.avatar = avt;
     }
-    if(!body.date_of_birth){
+    if(date){
+        body.date_of_birth = date;
+    } else {
         delete body.date_of_birth
     }
     return axios({
@@ -93,7 +124,8 @@ export const updateProfileUserById = async (id, body, avt) => {
         url: `${api_endpoint}/api/admin/profile/${id}`,
         headers: getHeader1(),
         data: {
-            ...body
+            ...body,
+            confirmed: cf
         }
     })
         .then(function (response) {
@@ -117,12 +149,15 @@ export const addUser = async (body, avt, date) => {
         delete body.date_of_birth
     }
 
+    var cf = changeConfirmed(body);
+
     return axios({
         method: "post",
         url: `${api_endpoint}/api/admin/profile`,
         headers: getHeader1(),
         data: {
-            ...body
+            ...body,
+            confirmed: cf
         },
     })
         .then(function (response) {
@@ -148,33 +183,35 @@ export const deleteUser = async (id) => {
 }
 
 
-export const updateProfileUserByUser = async (body, avt) => {
-    const data = body
-    if (data.confirmed) {
-        data.confirmed = 1;
-        } else {
-            data.confirmed = 0;
-        }
+export const updateProfileUserByUser = async (body, avt, date) => {
+    // const data = body
+    if(date){
+        body.date_of_birth = date;
+    } else {
+        delete body.date_of_birth
+    }
+    var cf = changeConfirmed(body);
     if(avt){
         const fd = new FormData();
         fd.append('image',avt)
-        data.avatar = avt;
+        body.avatar = avt;
     }
-    if(!data.date_of_birth){
-        delete data.date_of_birth
+    if(!body.date_of_birth){
+        delete body.date_of_birth
     }
     return axios({
         method: "post",
         url: `${api_endpoint}/api/profile`,
         headers: getHeader1(),
         data: {
-            ...data
+            ...body,
+            confirmed: cf
         }
     })
         .then(function (response) {
             return response.data;
         })
-        .catch(function (response) {
-            return response.data;
+        .catch(function (jes) {
+            return jes.data;
         });
 }

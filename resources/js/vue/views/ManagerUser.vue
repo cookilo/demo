@@ -1,28 +1,30 @@
 <script setup>
-const api_endpoint = process.env.APP_URL;
 import sww from 'sweetalert2';
 import { getUserProfileByID, deleteUser, getUsers } from "../api/user";
+const api_endpoint = process.env.MIX_API_URL;
 </script>
 
 <template>
     <div class="about">
-        <div class="text-end"><button type="button" class="btn btn-primary" @click="addUser()">Add new user</button>
+        <div class="text-end"><button type="button" class="btn btn-primary" @click="addUser()">新しいユーザー追加</button>
         </div>
         <table class="table table-striped text-center">
             <thead>
                 <tr>
                     <th scope="col">#</th>
-                    <th scope="col">Avatar</th>
-                    <th scope="col">Name</th>
-                    <th scope="col">Address</th>
-                    <th scope="col">Actions</th>
+                    <th scope="col">アバター</th>
+                    <th scope="col">氏名</th>
+                    <th scope="col">住所</th>
+                    <th scope="col">アクション</th>
                 </tr>
             </thead>
             <tbody>
                 <tr v-for="user in this.$store.state.users" :key="user.id">
                     <th scope="row">{{user.id}}</th>
                     <td>
-                        <img v-if="!user.avatar" class="img-avatar" src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg" alt="" />
+                        <img v-if="!user.avatar" class="img-avatar"
+                        src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg"
+                        alt="" />
                         <img v-if="user.avatar" class="img-avatar" :src="`${api_endpoint}/storage/${user.avatar}`" alt="" />
                     </td>
                     <td>{{user.name}}</td>
@@ -64,7 +66,7 @@ export default {
 
         remoteUserByID: function(id){
             sww.fire({
-                title: 'Do you want delete user?',
+                title: 'ユーザーを削除しますか?',
                 showCancelButton: true
             }).then(r =>{
                 if(r.isConfirmed){

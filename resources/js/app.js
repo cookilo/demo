@@ -5,7 +5,7 @@ import router from './vue/router'
 import store from './vue/store'
 import Datepicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css'
-import vee from 'vee-validate';
+import VeeValidate from 'vee-validate';
 
 
 const app = createApp(App)

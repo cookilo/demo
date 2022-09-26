@@ -1,101 +1,138 @@
 <script setup>
-const api_endpoint = process.env.APP_URL;
-import { updateProfileUserByUser, getUserProfile } from "../api/user";
+const api_endpoint = process.env.MIX_API_URL;
+import { Form, Field, ErrorMessage } from 'vee-validate';
+import { updateProfileUserByUser, getUserProfile, changeDate } from "../api/user";
+import * as yup from 'yup';
 import sww from 'sweetalert2';
+const schema = yup.object({
+    name: yup.string().required(),
+    email: yup.string().required().email(),
+    password: yup.string().required().min(6),
+    password_confirmation: yup.string().required().min(6),
+    address: yup.string().required(),
+    post_code: yup.number().positive(),
+    salary: yup.number().positive(),
+    proficiency: yup.string().required(),
+    contract: yup.string().required(),
+});
 </script>
 
 <template>
-    <div class="secure">
-        <div class="container rounded bg-white mt-5 mb-5">
-            <div class="row">
-                <div class="col-md-3 border-right">
-                    <div class="d-flex flex-column align-items-center text-center p-3 py-5">
-                        <img v-if="!this.$store.state.profileUser.avatar" class="rounded-circle mt-5" width="150px"
-                            src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg" />
-                        <img v-if="this.$store.state.profileUser.avatar" class="rounded-circle mt-5" width="150px"
-                            :src="`${api_endpoint}/storage/${this.$store.state.profileUser.avatar}`" />
-                        <span class="text-black-50">{{this.$store.state.profileUser.email}}</span>
+    <Form :validation-schema="schema">
+        <div class="secure">
+            <div class="container rounded bg-white mt-5 mb-5">
+                <div class="row">
+                    <div class="col-md-3 border-right">
+                        <div class="d-flex flex-column align-items-center text-center p-3 py-5">
+                            <img v-if="!this.$store.state.profileUser.avatar" class="rounded-circle mt-5" width="150px"
+                                src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg" />
+                            <img ref_for="avatar" v-if="this.$store.state.profileUser.avatar" class="rounded-circle mt-5" width="150px"
+                                :src="`${api_endpoint}/storage/${this.$store.state.profileUser.avatar}`" />
+                            <span class="text-black-50">{{this.$store.state.profileUser.email}}</span>
+                        </div>
                     </div>
-                </div>
-                <div class="col-md-5 border-right">
-                    <div class="p-3 py-5">
-                        <div class="d-flex justify-content-between align-items-center mb-3">
-                            <h4 class="text-right">Profile Settings</h4>
-                        </div>
-                        <div class="col-md-12">
-                            <label for="name" class="labels">Name</label><input id="name" type="text" :class="{'none-active-input':this.$store.state.profileUser.confirmed !==0}" class="form-control"
-                                placeholder="enter Postcode" v-model="body.name" />
-                        </div>
-                        <div class="col-md-12">
-                            <label for="post_code" class="labels">Postcode</label><input id="post_code" type="text" :class="{'none-active-input':this.$store.state.profileUser.confirmed !==0}" class="form-control"
-                                placeholder="enter Postcode" v-model="body.post_code" />
-                        </div>
-                        <div class="col-md-12">
-                            <label for="salary" class="labels">salary</label><input id="salary" type="text" :class="{'none-active-input':this.$store.state.profileUser.confirmed !==0}" class="form-control"
-                                placeholder="enter salary" v-model="body.salary" />
-                        </div>
-                        <div class="col-md-12">
-                            <label for="date_of_birth" class="labels">date of birth</label><input id="date_of_birth" type="text" :class="{'none-active-input':this.$store.state.profileUser.confirmed !==0}" class="form-control"
-                                placeholder="enter date of birth"
-                                v-model="body.date_of_birth" />
-                        </div>
-                        <div class="row mt-3">
+                    <div class="col-md-5 border-right">
+                        <div class="p-3 py-5">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h4 class="text-right">プロファイル設定</h4>
+                            </div>
                             <div class="col-md-12">
-                                <label for="address" class="labels">Address</label><textarea type="text" :class="{'none-active-input':this.$store.state.profileUser.confirmed !==0}" class="form-control"
-                                    placeholder="enter address"
-                                    v-model="body.address" id="address"></textarea>
+                                <label for="name" :class="{'none-active-input':this.$store.state.profileUser.confirmed !==0}" class="labels">氏名</label>
+                                <span class="err-mess-validate">*</span>
+                                <ErrorMessage class="err-mess-validate ml-3" name="name" as="span">{{ErrorMessage?'氏名は必須です。':''}}</ErrorMessage>
+                                <Field id="name" name="name" type="text" :class="{'none-active-input':this.$store.state.profileUser.confirmed !==0}" class="form-control"
+                                    placeholder="氏名入力" v-model="body.name" />
+                            </div>
+                            <div class="col-md-12">
+                                <label for="post_code" :class="{'none-active-input':this.$store.state.profileUser.confirmed !==0}" class="labels">郵便番号</label>
+                                <!-- <span class="err-mess-validate">*</span> -->
+                                <ErrorMessage class="err-mess-validate ml-3" name="post_code" as="span">{{ErrorMessage?'郵便番号は数字で整数です。':''}}</ErrorMessage>
+                                <Field id="post_code" name="post_code" type="text" :class="{'none-active-input':this.$store.state.profileUser.confirmed !==0}"
+                                class="form-control" placeholder="郵便番号を入力" v-model="body.post_code" />
+                            </div>
+                            <div class="col-md-12">
+                                <label for="salary" :class="{'none-active-input':this.$store.state.profileUser.confirmed !==0}" class="labels">給料</label>
+                                <!-- <span class="err-mess-validate">*</span> -->
+                                <ErrorMessage class="err-mess-validate ml-3" name="salary" as="span">{{ErrorMessage?'給料は数字で整数です。':''}}</ErrorMessage>
+                                <Field id="salary" name="salary" type="text" :class="{'none-active-input':this.$store.state.profileUser.confirmed !==0}"
+                                class="form-control" placeholder="給料" v-model="body.salary" />
+                            </div>
+                            <div class="col-md-12">
+                                <label for="date_of_birth" :class="{'none-active-input':this.$store.state.profileUser.confirmed !==0}" class="labels">生年月日</label>
+                                <Datepicker :enableTimePicker="false"  v-model="body.date_of_birth" :class="{'none-active-input':this.$store.state.profileUser.confirmed !==0}">
+                                </Datepicker>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-md-12">
+                                    <label for="address" :class="{'none-active-input':this.$store.state.profileUser.confirmed !==0}" class="labels">住所</label>
+                                    <!-- <span class="err-mess-validate">*</span><ErrorMessage class="err-mess-validate ml-3" name="address" /> -->
+                                    <Field as="textarea" name="address" type="text" :class="{'none-active-input':this.$store.state.profileUser.confirmed !==0}"
+                                        class="form-control"
+                                        placeholder="住所を入力"
+                                        v-model="body.address" id="address" />
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <label for="avatar" :class="{'none-active-input':this.$store.state.profileUser.confirmed !==0}" class="labels">アバター</label>
+                                <input  id="avatar" @change="onFileSelected" name="avatar"
+                                    type="file" :class="{'none-active-input':this.$store.state.profileUser.confirmed !==0}" class="form-control"/>
                             </div>
                         </div>
-                        <div class="col-md-12">
-                            <label for="avatar" class="labels">Avatar</label>
-                            <input  id="avatar" @change="onFileSelected" name="avatar" type="file" :class="{'none-active-input':this.$store.state.profileUser.confirmed !==0}" class="form-control"/>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="p-3 py-5">
+                            <div class="
+                                d-flex
+                                justify-content-between
+                                align-items-center
+                                experience
+                            ">
+                            </div>
+                            <br />
+                            <div class="col-md-12">
+                                <label for="proficiency" :class="{'none-active-input':this.$store.state.profileUser.confirmed !==0}"
+                                    class="labels">プロフィシェンシー</label>
+                                    <!-- <span class="err-mess-validate">*</span><ErrorMessage class="err-mess-validate ml-3" name="proficiency" /> -->
+                                    <Field as="textarea" name="proficiency" type="text"
+                                        :class="{'none-active-input':this.$store.state.profileUser.confirmed !==0}"
+                                        class="form-control skill"
+                                        id="proficiency"
+                                        placeholder="習熟度を入力" v-model="body.proficiency" />
+                            </div>
+                            <br />
+                            <div class="col-md-12">
+                                <label for="contract" :class="{'none-active-input':this.$store.state.profileUser.confirmed !==0}" class="labels">詳細契約</label>
+                                <!-- <span class="err-mess-validate">*</span>
+                                <ErrorMessage class="err-mess-validate ml-3" name="contract" /> -->
+                                <Field as="textarea" name="contract" type="text"
+                                    :class="{'none-active-input':this.$store.state.profileUser.confirmed !==0}"
+                                    class="form-control labo" placeholder="契約内容を入力"
+                                    id="contract"
+                                    v-model="body.contract" />
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="p-3 py-5">
-                        <div class="
-                            d-flex
-                            justify-content-between
-                            align-items-center
-                            experience
-                        ">
-                        </div>
-                        <br />
-                        <div class="col-md-12">
-                            <label for="confirmed" class="labels">proficiency</label><textarea type="text"
-                                :class="{'none-active-input':this.$store.state.profileUser.confirmed !==0}"
-                                class="form-control skill"
-                                id="confirmed"
-                                placeholder="experience" v-model="body.proficiency" />
-                        </div>
-                        <br />
-                        <div class="col-md-12">
-                            <label for="contract" class="labels">Contract Details</label><textarea type="text"
-                                :class="{'none-active-input':this.$store.state.profileUser.confirmed !==0}"
-                                class="form-control labo" placeholder="additional details"
-                                id="contract"
-                                v-model="body.contract" />
-                        </div>
-                    </div>
-                </div>
 
-            </div>
-            <div v-if="this.$store.state.profileUser.confirmed===0" class="mt-5 text-center">
-                <label for="confirmed">Verification</label>
-                <input class="cfm-au" type="checkbox" name="confirmed" id="confirmed" v-model="body.confirmed">
-                <button @click="updateUserByUser()" class="btn btn-primary profile-button ml-3" type="button">
-                    Save Profile
-                </button>
+                </div>
+                <div v-if="this.$store.state.profileUser.confirmed===0" class="mt-5 confirmed-wrap">
+                    <label for="confirmed">検証</label>
+                    <input class="cfm-au" type="checkbox" name="confirmed" id="confirmed" v-model="body.confirmed">
+                    <button @click="updateUserByUser()" class="btn btn-primary profile-button ml-3" type="button">
+                        保存
+                    </button>
+                </div>
             </div>
         </div>
-    </div>
+    </Form>
 </template>
 
 
 <script>
+import Datepicker from '@vuepic/vue-datepicker';
+import '@vuepic/vue-datepicker/dist/main.css'
 export default {
     name: "ProfileUser",
+    components: { Datepicker },
     data() {
         return {
             body: {
@@ -119,18 +156,21 @@ export default {
     },
     methods: {
         updateUserByUser: function(){
-            updateProfileUserByUser(this.body, this.selectedFile).then(data => {
+            var dateCus = changeDate(this.body);
+            updateProfileUserByUser(this.body, this.selectedFile, dateCus).then(data_update => {
                 getUserProfile().then(data => {
                     this.$store.state.profileUser = data.data
                     this.$router.replace({ name: "profileuser" });
                 });
-                if(!data.status){
+                if(data_update.status === 'error'){
                     sww.fire({
-                        title: 'Not done. Please contact admin.'
+                        icon: 'error',
+                        title: 'エラーが発生しました。もう一度ご確認ください。'
                     })
-                } else {
+                }
+                if(data_update.status === true) {
                         sww.fire({
-                        title: 'saved your profile.'
+                        title: 'プロファイルが保存されました。'
                     })
                 }
             })
@@ -144,6 +184,15 @@ export default {
 <style scoped>
 @import url(https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha1/dist/css/bootstrap.min.css);
 
+.confirmed-wrap{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.err-mess-validate{
+    color: red;
+    font-size: 12px;
+}
 .none-active-input {
     pointer-events: none !important;
 }

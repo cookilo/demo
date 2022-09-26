@@ -7,20 +7,20 @@ import { singin, getUsers, getUserProfile } from "./api/user";
     <div id="app1">
         <div id="nav">
         <!-- <router-link v-if="this.$store.state.authenticated" to="/">Home</router-link> -->
-        <router-link v-if="this.$store.state.authenticated && this.$store.state.userType" to="/ManagerUser">Manager user</router-link>
-        <router-link v-if="this.$store.state.authenticated && !this.$store.state.userType" to="/profileuser">User Profile</router-link>
-        <router-link v-if="this.$store.state.authenticated && this.$store.state.userType" to="/adduser">Add user</router-link>
+        <router-link v-if="this.$store.state.authenticated && this.$store.state.userType" to="/ManagerUser">ユーザー管理</router-link>
+        <router-link v-if="this.$store.state.authenticated && !this.$store.state.userType" to="/profileuser">プロファイルユーザー</router-link>
+        <router-link v-if="this.$store.state.authenticated && this.$store.state.userType" to="/adduser">ユーザー追加</router-link>
         <router-link
             v-if="this.$store.state.authenticated"
             to="/"
             v-on:click="logout()"
             replace
-            >Logout</router-link
+            >ログアウト</router-link
         >
         <div class="limiter" v-if="!this.$store.state.authenticated">
             <div class="container-login100">
             <div class="wrap-login100 p-t-30 p-b-50">
-                <span class="login100-form-title p-b-41"> Account Login </span>
+                <span class="login100-form-title p-b-41"> ログインアカウント </span>
                 <div
                 class="wrap-input100 validate-input"
                 data-validate="Enter username"
@@ -51,7 +51,7 @@ import { singin, getUsers, getUserProfile } from "./api/user";
 
                 <div class="container-login100-form-btn m-t-32">
                 <button class="login100-form-btn" v-on:click="login()">
-                    Login
+                    ログインアカウント
                 </button>
                 </div>
             </div>
