@@ -23,7 +23,7 @@ import { singin, getUsers, getUserProfile } from "./api/user";
                 <span class="login100-form-title p-b-41"> ログインアカウント </span>
                 <div
                 class="wrap-input100 validate-input"
-                data-validate="Enter username"
+                data-validate="メールアドレスを入力してください。"
                 >
                 <input
                     class="input100"
@@ -31,13 +31,13 @@ import { singin, getUsers, getUserProfile } from "./api/user";
                     v-model="input.username"
                     type="text"
                     name="username"
-                    placeholder="User name"
+                    placeholder="メールアドレス"
                 />
                 </div>
 
                 <div
                 class="wrap-input100 validate-input"
-                data-validate="Enter password"
+                data-validate="パスワードを入力してください。"
                 >
                 <input
                     class="input100"
@@ -45,7 +45,7 @@ import { singin, getUsers, getUserProfile } from "./api/user";
                     v-model="input.password"
                     type="password"
                     name="pass"
-                    placeholder="Password"
+                    placeholder="パスワード"
                 />
                 </div>
 
@@ -102,7 +102,7 @@ export default {
                             sessionStorage.setItem("tk", data.data.access_token);
                             getUsers().then(data => {
                                 this.$store.state.users = data.data.data
-                                
+
                             })
                         }
                         if(data.data.user.roles.some(r=> r.name === 'user')){
@@ -116,7 +116,7 @@ export default {
                             });
                         }
                     }
-                    
+
                 }
             });
         } else {
@@ -146,7 +146,7 @@ export default {
     color: #fff;
 }
 .mess-err{
-   color: #ff5858; 
+   color: #ff5858;
 }
 #app1 {
     font-family: Avenir, Helvetica, Arial, sans-serif;
