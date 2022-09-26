@@ -1,25 +1,38 @@
 ### Common way
 
-Rename the .env.example file to .env, and change APP_URL and MIX_APP_URL in .env file to your local domain, then:
+.env.exampleを .envに変更してから、 .envファイルでのいくつか情報を変更いたします。
 
-Install PHP and JavaScript dependencies:
+    APP_URL=あなたのローカルドメイン
+    MIX_APP_URL=あなたのローカルドメイン
 
-    composer install
+データベース情報
+
+    DB_HOST=127.0.0.1
+    DB_PORT=3306
+    DB_DATABASE=user_management
+    DB_USERNAME=root
+    DB_PASSWORD=
+
+次は以下を実行します。
+
+PHP と JavaScript の依存関係をインストールします。
+
+    ccomposer install
     npm install
 
 Generate Laravel keys:
 
     php artisan key:generate
 
-Migrate and seed the database:
+データベースを移行してシードします。
 
     php artisan migrate --seed
 
-Compile all the front-end stuff:
+すべてのフロントエンドスタッフをコンパイルします:
 
     npm run dev
 
-Account Default:
+アカウントのデフォルト:
 
-    user: admin@admin.com
-    password: 123456
+    ユーザー: admin@admin.com
+    パスワード: 123456
