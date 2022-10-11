@@ -65,14 +65,14 @@ const schema = yup.object({
                                 <!-- <span class="err-mess-validate">*</span>
                                 <ErrorMessage class="err-mess-validate ml-3" name="address" /> -->
                                 <Field as="textarea" id="address" type="text" name="address"
-                                    class="form-control" placeholder="住所を入力" v-model="body.address" />
+                                    class="form-control" placeholder="住所を入力してください。" v-model="body.address" />
                             </div>
                             <div class="col-md-12">
                                 <label for="post_code" class="labels">郵便番号は数字で正数です。</label>
                                 <!-- <span class="err-mess-validate">*</span> -->
                                 <ErrorMessage class="err-mess-validate ml-3" name="post_code" as="span">{{ErrorMessage?'郵便番号は数字で整数です。':''}}</ErrorMessage>
                                 <Field id="post_code" name="post_code" type="text"
-                                    class="form-control" placeholder="習熟度を入力" v-model="body.post_code" />
+                                    class="form-control" placeholder="郵便番号を入力してください。" v-model="body.post_code" />
                             </div>
                             <div class="col-md-12">
                                 <label class="labels">生年月日</label>
@@ -82,9 +82,15 @@ const schema = yup.object({
                                 <label for="salary" class="labels">給料</label>
                                 <!-- <span class="err-mess-validate">*</span> -->
                                 <ErrorMessage class="err-mess-validate ml-3" name="salary" as="span">{{ErrorMessage?'給料は数字で整数です。':''}}</ErrorMessage>
-                                <Field id="salary" name="salary" type="text" class="form-control"
-                                    placeholder="給料" v-model="body.salary" />
+                                <div class="input-group mb-3">
+                                    <Field id="salary" name="salary" type="text" class="form-control"
+                                           placeholder="給料" v-model="body.salary" />
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">¥</span>
+                                    </div>
+                                </div>
                             </div>
+
                             <div class="col-md-12">
                                 <label for="avatar" class="labels">アバター</label>
                                 <input id="avatar" @change="onFileSelected" name="avatar" type="file" class="form-control"/>

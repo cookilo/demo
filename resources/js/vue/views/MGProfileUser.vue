@@ -53,28 +53,30 @@ const api_endpoint = process.env.MIX_API_URL;
                                 <label for="salary" class="labels">給料</label>
                                 <!-- <span class="err-mess-validate">*</span> -->
                                 <ErrorMessage class="err-mess-validate ml-3" name="salary" as="span">{{ErrorMessage?'給料は数字で整数です。':''}}</ErrorMessage>
-                                <Field id="salary" name="salary" type="text" class="form-control"
-                                    placeholder="給料" v-model="body.salary" />
+                                <div class="input-group mb-3">
+                                    <Field id="salary" name="salary" type="text" class="form-control"
+                                           placeholder="給料" v-model="body.salary" />
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">¥</span>
+                                    </div>
+                                </div>
                             </div>
                             <div class="col-md-12">
                                 <label for="date_of_birth" class="labels">生年月日</label>
                                 <Datepicker :enableTimePicker="false"  v-model="body.date_of_birth"></Datepicker>
                             </div>
-                            <div class="row mt-3">
-                                <div class="col-md-12">
-                                    <label for="address" class="labels">住所</label>
-                                    <!-- <span class="err-mess-validate">*</span>
-                                    <ErrorMessage class="err-mess-validate ml-3" name="address" /> -->
-                                    <Field as="textarea" name="address" id="address" type="text"
-                                        class="form-control" placeholder="住所を入力"
-                                        v-model="body.address"></Field>
-                                </div>
+
+                            <div class="col-md-12">
+                                <label for="address" class="labels">住所</label>
+                                <!-- <span class="err-mess-validate">*</span>
+                                <ErrorMessage class="err-mess-validate ml-3" name="address" /> -->
+                                <Field as="textarea" name="address" id="address" type="text"
+                                    class="form-control" placeholder="住所を入力"
+                                    v-model="body.address"></Field>
                             </div>
-                            <div class="row mt-3">
-                                    <div class="col-md-12">
-                                        <label for="avatar" class="labels">アバター</label>
-                                        <input id="avatar" @change="onFileSelected" name="avatar" type="file" class="form-control"/>
-                                </div>
+                            <div class="col-md-12">
+                                <label for="avatar" class="labels">アバター</label>
+                                <input id="avatar" @change="onFileSelected" name="avatar" type="file" class="form-control"/>
                             </div>
                         </div>
                     </div>
