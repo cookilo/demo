@@ -39,7 +39,7 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
             return $query->where('name', '=', 'user');
         })
             ->with('roles')
-            ->orderBy('created_at', 'DESC')->all();
+            ->orderBy('created_at', 'DESC')->paginate(100);
     }
 
     public function findUserWithRole($id)
