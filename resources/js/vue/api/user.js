@@ -29,6 +29,45 @@ export const getUsers = async () => {
         })
 }
 
+export const changePassword = async (body, id) => {
+    return axios({
+        method: "post",
+        headers: getHeader(),
+        url: `${api_endpoint}/api/admin/change-password/${id}`,
+        data: {
+            password: body.new_password,
+            password_confirmation:body.password_confirmation
+        }
+    })
+        .then(function (response) {
+            return response.data;
+        })
+        .catch(function (response) {
+            return response.data;
+        });
+
+}
+
+export const changePasswordByUser = async (body) => {
+    return axios({
+        method: "post",
+        headers: getHeader(),
+        url: `${api_endpoint}/api/change-password`,
+        data: {
+            password_old: body.old_password,
+            password: body.new_password,
+            password_confirmation:body.password_confirmation
+        }
+    })
+        .then(function (response) {
+            return response.data;
+        })
+        .catch(function (response) {
+            return response.data;
+        });
+
+}
+
 export const singin = async (email, password) => {
     return axios({
         method: "post",
@@ -212,6 +251,6 @@ export const updateProfileUserByUser = async (body, avt, date) => {
             return response.data;
         })
         .catch(function (jes) {
-            return jes.data;
+            return jes.response;
         });
 }

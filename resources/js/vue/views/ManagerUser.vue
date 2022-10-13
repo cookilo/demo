@@ -1,6 +1,6 @@
 <script setup>
 import sww from 'sweetalert2';
-import { getUserProfileByID, deleteUser, getUsers } from "../api/user";
+import { getUserProfileByID, deleteUser, getUsers} from "../api/user";
 const api_endpoint = process.env.MIX_API_URL;
 </script>
 
@@ -20,7 +20,7 @@ const api_endpoint = process.env.MIX_API_URL;
             </thead>
             <tbody>
                 <tr v-for="user in this.$store.state.users" :key="user.id">
-                    <th scope="row">{{user.id}}</th>
+                    <td scope="row">{{user.id}}</td>
                     <td>
                         <img v-if="!user.avatar" class="img-avatar"
                         src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg"
@@ -32,6 +32,7 @@ const api_endpoint = process.env.MIX_API_URL;
                     <td>
                         <div class="actions-user">
                             <div @click="editProfileUserById(user.id)" class="ac-user"><img class="img-user-action" src="../assets/img/user-avatar.png" alt=""></div>
+                            <div @click="changePass(user.id)" class="ac-user"><img class="img-user-action" src="../assets/img/password.png" alt=""></div>
                             <div @click="remoteUserByID(user.id)" class="ac-user"><img class="img-user-action" src="../assets/img/remove.png" alt=""></div>
                         </div>
                     </td>
@@ -49,15 +50,16 @@ export default {
         if (!this.$store.state.authenticated) {
             this.$router.replace({ name: "home" });
         }
-
     },
     methods: {
         editProfileUserById: function (id) {
-
             getUserProfileByID(id).then(data => {
                 this.$store.state.profileUserByID = data.data
                 this.$router.replace({ name: "editprofileuser" });
             })
+        },
+        changePass: function (id) {
+            this.$router.push({ name: `changepass`, params: { id: id }});
         },
 
         addUser: function () {
@@ -109,9 +111,12 @@ export default {
 }
 
 .about {
-    text-align: left;
+    text-align: right;
     width: 85%;
     margin: 0 auto;
+}
+th{
+    text-align: center !important;
 }
 </style>
 

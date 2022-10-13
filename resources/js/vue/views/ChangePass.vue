@@ -1,116 +1,149 @@
 <script setup>
-import { useStore } from "vuex";
-import { singin, getUsers, getUserProfile } from "./api/user";
+import { Form, Field, ErrorMessage } from 'vee-validate';
+import { updateProfileUserByUser, getUserProfile, changePassword, changePasswordByUser } from "../api/user";
+import * as yup from 'yup';
+import sww from 'sweetalert2';
+const api_endpoint = process.env.MIX_API_URL;
+const schema = yup.object({
+    name: yup.string().required(),
+    email: yup.string().required().email(),
+    new_password: yup.string().required().min(6),
+    old_password: yup.string().required().min(6),
+    password: yup.string().required().min(6),
+    password_confirmation: yup.string().required().min(6),
+    address: yup.string().required(),
+    post_code: yup.number().positive(),
+    salary: yup.number().positive(),
+    proficiency: yup.string().required(),
+    contract: yup.string().required(),
+});
 </script>
 
 <template>
     <div id="app1">
-        <div id="nav">
-            <router-link v-if="this.$store.state.authenticated && this.$store.state.userType" to="/ManagerUser">ユーザー管理
-            </router-link>
-            <router-link v-if="this.$store.state.authenticated && !this.$store.state.userType" to="/profileuser">
-                プロファイルユーザー</router-link>
-            <router-link v-if="this.$store.state.authenticated && this.$store.state.userType" to="/adduser">ユーザー追加
-            </router-link>
-            <router-link v-if="this.$store.state.authenticated" to="/" v-on:click="logout()" replace>ログアウト</router-link>
-        </div>
-        <div @keyup.enter="login()" class="t" v-if="!this.$store.state.authenticated">
-            <div class="login">
-                <h1>ログインアカウント</h1>
-                    <input 
-                        id="username"
-                        v-model="input.username"
-                        type="text"
-                        name="username"
-                        placeholder="メールアドレス"
-                    />
-                    <input 
-                        id="password"
-                        v-model="input.password"
+        <Form :validation-schema="schema">
+            <div class="reset-pass">
+            <h1>パスワードを変更する</h1>
+                <div v-if="this.$route.params.id === 'user'">
+                    <label for="old_password">以前のパスワード</label>
+                    <span class="err-mess-validate">*</span>
+                    <ErrorMessage class="err-mess-validate ml-3" name="old_password" as="span">{{ErrorMessage?'パスワードは6文字以上で必要です。':''}}</ErrorMessage>
+                    <Field
+                        as="input"
+                        id="old_password"
                         type="password"
-                        name="pass"
-                        placeholder="パスワード"
+                        name="old_password"
+                        placeholder="以前のパスワード"
+                        v-model="body.old_password"
                     />
-                    <button @keyup.enter="login()" v-on:click="login()" type="submit" class="btn btn-primary btn-block btn-large">ログイン</button>
-            </div>
-            <div v-if="messErr" class="mess-err">{{messErr}}</div>
+                </div>
+
+                <label for="new_password">新しいパスワード</label>
+                <span class="err-mess-validate">*</span>
+                <ErrorMessage class="err-mess-validate ml-3" name="new_password" as="span">{{ErrorMessage?'パスワードは6文字以上で必要です。':''}}</ErrorMessage>
+                <Field
+                    as="input"
+                    id="new_password"
+                    type="password"
+                    name="new_password"
+                    placeholder="新しいパスワード"
+                    v-model="body.new_password"
+                    @change="ComfirmPassword()"
+                />
+
+                <label for="password_confirmation">パスワード</label>
+                <span class="err-mess-validate">*</span>
+                <span v-if="passErr" class="err-mess-validate ml-3">パスワードを再度ご確認ください。</span>
+                <ErrorMessage class="err-mess-validate ml-3" name="password_confirmation" as="span">{{ErrorMessage?'パスワードは6文字以上で必要です。':''}}</ErrorMessage>
+                <Field
+                    as="input"
+                    id="password_confirmation"
+                    type="password"
+                    name="password_confirmation"
+                    placeholder="パスワードを入力してください。"
+                    v-model="body.password_confirmation"
+                    @change="ComfirmPassword()"
+                />
+
+                <button v-on:click="resetPass()" type="submit" class="btn btn-primary btn-block btn-large">reset</button>
         </div>
+        </Form>
+
         <RouterView @authenticated="setAuthenticated" />
     </div>
 </template>
 
+
 <script>
+import Datepicker from '@vuepic/vue-datepicker';
+import '@vuepic/vue-datepicker/dist/main.css'
 export default {
-    setup() {
-        const store = useStore();
-    },
+    name: "ChangePass",
+    components: { Datepicker },
     data() {
         return {
-            authenticated: false,
-            input: {
-                username: "",
-                password: "",
+            body: {
+                new_password: null,
+                password_confirmation: null,
+                old_password: null,
             },
-            messErr: null,
+            passErr: false,
+            contract: this.$store.state.profileUser.contract,
         };
     },
+    mounted() {
+        console.log('$route.params.id: ', this.$route.params.id);
+        if (!this.$store.state.authenticated) {
+            this.$router.replace({ name: "home" });
+        }
+    },
     methods: {
-        setAuthenticated(status) {
-            this.$store.state.authenticated = status;
-        },
-        logout() {
-            this.setAuthenticated(false)
-            sessionStorage.setItem("tk", '');
-        },
-        login() {
-            if (this.input.username != "" && this.input.password != "") {
-                singin(this.input.username, this.input.password).then((data) => {
-                    if (data.code !== 202) {
-                        this.messErr = data.message;
+        resetPass: function(){
+            if(this.$route.params.id === 'user'){
+                changePasswordByUser(this.body). then(data => {
+                    if(data.status === true){
+                        this.$router.replace({ name: "profileuser" });
+                        sww.fire({
+                            icon: 'success',
+                            title: 'パスワード変更済み'
+                        })
                     }
-                    if (data) {
-                        if (data.data.user) {
-                            if (data.data.user.roles.some(r => r.name === 'admin')) {
-                                // this.$emit("authenticated", true);
-                                this.$router.replace({ name: "manageruser" });
-                                this.setAuthenticated(true)
-                                this.$store.state.userType = true;
-                                sessionStorage.setItem("tk", data.data.access_token);
-                                this.messErr = null;
-                                getUsers().then(data => {
-                                    this.$store.state.users = data.data.data
-
-                                })
-                            }
-                            if (data.data.user.roles.some(r => r.name === 'user')) {
-                                // this.$emit("authenticated", true);
-                                this.setAuthenticated(true)
-                                this.$store.state.userType = false;
-                                sessionStorage.setItem("tk", data.data.access_token);
-                                this.messErr = null;
-                                getUserProfile().then(data => {
-                                    this.$store.state.profileUser = data.data
-                                    this.$router.replace({ name: "profileuser" });
-                                });
-                            }
-                        }
-
+                    if(data.status === false){
+                        sww.fire({
+                            icon: 'error',
+                            title: 'パスワードが間違っている'
+                        })
                     }
-                });
+                })
             } else {
-                console.log("A username and password must be present");
+                    changePassword(this.body,this.$route.params.id).then(data => {
+                    if(data.status === true){
+                        this.$router.replace({ name: "manageruser" });
+                        sww.fire({
+                            icon: 'success',
+                            title: 'パスワード変更済み'
+                        })
+                    }
+                })
             }
         },
+        ComfirmPassword(){
+            if(this.body.new_password !== this.body.password_confirmation){
+                this.passErr = true;
+            } else {
+                this.passErr = false;
+            }
+        }
     },
 };
 </script>
 
-
 <style scoped>
-@import "./assets/css/bootstrap.min.css";
-@import "./assets/css/util.css";
-@import "./assets/css/main-new.css";
-@import "./assets/fonts/icon-font.min.css";
+
+.err-mess-validate{
+    color: red;
+    font-size: 12px;
+}
 .t{
     height: 100vh;
     width: 100%;
@@ -156,7 +189,7 @@ export default {
 }
 
 .container-login100 {
-    background-image: url("assets/img/bg-01.jpg");
+    background-image: url("../assets/img/bg-01.jpg");
 }
 
 #nav {
@@ -321,21 +354,22 @@ body {
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#3E1D6D', endColorstr='#092756', GradientType=1);
 }
 
-.login {
+.reset-pass {
   position: absolute;
   top: 50%;
   left: 50%;
   margin: -150px 0 0 -150px;
   width: 300px;
   height: 300px;
+  text-align: left;
 }
 
-.login h1 {
-    color: #fff;
+.reset-pass h1 {
+    color: #030303;
     text-shadow: 0 0 10px rgb(0 0 0 / 30%);
     letter-spacing: 1px;
     text-align: center;
-    font-size: 30px;
+    font-size: 28px;
     margin-bottom: 20px;
 }
 

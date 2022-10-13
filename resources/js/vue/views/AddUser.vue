@@ -61,13 +61,6 @@ const schema = yup.object({
                                     class="form-control" placeholder="パスワード確認" v-model="body.password_confirmation" />
                             </div>
                             <div class="col-md-12">
-                                <label for="address" class="labels">住所</label>
-                                <!-- <span class="err-mess-validate">*</span>
-                                <ErrorMessage class="err-mess-validate ml-3" name="address" /> -->
-                                <Field as="textarea" id="address" type="text" name="address"
-                                    class="form-control" placeholder="住所を入力してください。" v-model="body.address" />
-                            </div>
-                            <div class="col-md-12">
                                 <label for="post_code" class="labels">郵便番号は数字で正数です。</label>
                                 <!-- <span class="err-mess-validate">*</span> -->
                                 <ErrorMessage class="err-mess-validate ml-3" name="post_code" as="span">{{ErrorMessage?'郵便番号は数字で整数です。':''}}</ErrorMessage>
@@ -75,8 +68,16 @@ const schema = yup.object({
                                     class="form-control" placeholder="郵便番号を入力してください。" v-model="body.post_code" />
                             </div>
                             <div class="col-md-12">
+                                <label for="address" class="labels">住所</label>
+                                <!-- <span class="err-mess-validate">*</span>
+                                <ErrorMessage class="err-mess-validate ml-3" name="address" /> -->
+                                <Field as="textarea" id="address" type="text" name="address"
+                                    class="form-control" placeholder="住所を入力してください。" v-model="body.address" />
+                            </div>
+                            
+                            <div class="col-md-12">
                                 <label class="labels">生年月日</label>
-                                <Datepicker :enableTimePicker="false"  v-model="body.date_of_birth"></Datepicker>
+                                <Datepicker :enableTimePicker="false"  v-model="body.date_of_birth" autoApply :maxDate="new Date()"></Datepicker>
                             </div>
                             <div class="col-md-12">
                                 <label for="salary" class="labels">給料</label>
@@ -84,13 +85,13 @@ const schema = yup.object({
                                 <ErrorMessage class="err-mess-validate ml-3" name="salary" as="span">{{ErrorMessage?'給料は数字で整数です。':''}}</ErrorMessage>
                                 <div class="input-group mb-3">
                                     <Field id="salary" name="salary" type="text" class="form-control"
-                                           placeholder="給料" v-model="body.salary" />
+                                        placeholder="給料" v-model="body.salary" />
                                     <div class="input-group-append">
                                         <span class="input-group-text">¥</span>
                                     </div>
                                 </div>
+                                
                             </div>
-
                             <div class="col-md-12">
                                 <label for="avatar" class="labels">アバター</label>
                                 <input id="avatar" @change="onFileSelected" name="avatar" type="file" class="form-control"/>
@@ -139,7 +140,7 @@ const schema = yup.object({
         </div>
     </div>
     </Form>
-
+    
 </template>
 
 
@@ -185,7 +186,7 @@ export default {
                         this.$store.state.users = data.data.data
                     })
                 }
-
+                
                 if(data.status === 'error'){
                     var k = data.data[0];
                     var arrMesErr = [];

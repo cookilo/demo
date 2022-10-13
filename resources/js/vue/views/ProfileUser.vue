@@ -1,9 +1,9 @@
 <script setup>
-const api_endpoint = process.env.MIX_API_URL;
 import { Form, Field, ErrorMessage } from 'vee-validate';
 import { updateProfileUserByUser, getUserProfile, changeDate } from "../api/user";
 import * as yup from 'yup';
 import sww from 'sweetalert2';
+const api_endpoint = process.env.MIX_API_URL;
 const schema = yup.object({
     name: yup.string().required(),
     email: yup.string().required().email(),
@@ -29,6 +29,7 @@ const schema = yup.object({
                             <img ref_for="avatar" v-if="this.$store.state.profileUser.avatar" class="rounded-circle mt-5" width="150px"
                                 :src="`${api_endpoint}/storage/${this.$store.state.profileUser.avatar}`" />
                             <span class="text-black-50">{{this.$store.state.profileUser.email}}</span>
+                            <span class="change-pass-user" @click="changePass()">changepass</span>
                         </div>
                     </div>
                     <div class="col-md-5 border-right">
@@ -51,26 +52,32 @@ const schema = yup.object({
                                 class="form-control" placeholder="郵便番号を入力" v-model="body.post_code" />
                             </div>
                             <div class="col-md-12">
-                                <label for="salary" :class="{'none-active-input':this.$store.state.profileUser.confirmed !==0}" class="labels">給料</label>
+                                <label for="salary" class="labels none-active-input">給料</label>
                                 <!-- <span class="err-mess-validate">*</span> -->
                                 <ErrorMessage class="err-mess-validate ml-3" name="salary" as="span">{{ErrorMessage?'給料は数字で整数です。':''}}</ErrorMessage>
-                                <Field id="salary" name="salary" type="text" :class="{'none-active-input':this.$store.state.profileUser.confirmed !==0}"
-                                class="form-control" placeholder="給料" v-model="body.salary" />
+                                <div class="input-group mb-3">
+                                    <Field id="salary" name="salary" type="text"
+                                        class="form-control none-active-input" placeholder="給料" :value="body.salary" />
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">¥</span>
+                                    </div>
+                                </div>
+
                             </div>
                             <div class="col-md-12">
                                 <label for="date_of_birth" :class="{'none-active-input':this.$store.state.profileUser.confirmed !==0}" class="labels">生年月日</label>
-                                <Datepicker :enableTimePicker="false"  v-model="body.date_of_birth" :class="{'none-active-input':this.$store.state.profileUser.confirmed !==0}">
+                                <Datepicker autoApply :enableTimePicker="false"  :maxDate="new Date()"
+                                            v-model="body.date_of_birth"
+                                            :class="{'none-active-input':this.$store.state.profileUser.confirmed !==0}">
                                 </Datepicker>
                             </div>
-                            <div class="row mt-3">
-                                <div class="col-md-12">
-                                    <label for="address" :class="{'none-active-input':this.$store.state.profileUser.confirmed !==0}" class="labels">住所</label>
-                                    <!-- <span class="err-mess-validate">*</span><ErrorMessage class="err-mess-validate ml-3" name="address" /> -->
-                                    <Field as="textarea" name="address" type="text" :class="{'none-active-input':this.$store.state.profileUser.confirmed !==0}"
-                                        class="form-control"
-                                        placeholder="住所を入力"
-                                        v-model="body.address" id="address" />
-                                </div>
+                            <div class="col-md-12">
+                                <label for="address" :class="{'none-active-input':this.$store.state.profileUser.confirmed !==0}" class="labels">住所</label>
+                                <!-- <span class="err-mess-validate">*</span><ErrorMessage class="err-mess-validate ml-3" name="address" /> -->
+                                <Field as="textarea" name="address" type="text" :class="{'none-active-input':this.$store.state.profileUser.confirmed !==0}"
+                                    class="form-control"
+                                    placeholder="住所を入力してください。"
+                                    v-model="body.address" id="address" />
                             </div>
                             <div class="col-md-12">
                                 <label for="avatar" :class="{'none-active-input':this.$store.state.profileUser.confirmed !==0}" class="labels">アバター</label>
@@ -101,14 +108,14 @@ const schema = yup.object({
                             </div>
                             <br />
                             <div class="col-md-12">
-                                <label for="contract" :class="{'none-active-input':this.$store.state.profileUser.confirmed !==0}" class="labels">詳細契約</label>
+                                <label for="contract" class="labels none-active-input">詳細契約</label>
                                 <!-- <span class="err-mess-validate">*</span>
                                 <ErrorMessage class="err-mess-validate ml-3" name="contract" /> -->
                                 <Field as="textarea" name="contract" type="text"
-                                    :class="{'none-active-input':this.$store.state.profileUser.confirmed !==0}"
-                                    class="form-control labo" placeholder="契約内容を入力"
+                                    class="form-control labo none-active-input" placeholder="契約内容を入力"
                                     id="contract"
-                                    v-model="body.contract" />
+                                    :value="contract"
+                                    />
                             </div>
                         </div>
                     </div>
@@ -147,6 +154,7 @@ export default {
                 _method: 'PUT',
             },
             selectedFile: null,
+            contract: this.$store.state.profileUser.contract,
         };
     },
     mounted() {
@@ -162,7 +170,7 @@ export default {
                     this.$store.state.profileUser = data.data
                     this.$router.replace({ name: "profileuser" });
                 });
-                if(data_update.status === 'error'){
+                if(data_update.status === 'error' || data_update.status === 500){
                     sww.fire({
                         icon: 'error',
                         title: 'エラーが発生しました。もう一度ご確認ください。'
@@ -177,13 +185,20 @@ export default {
         },
         onFileSelected: function(e){
             this.selectedFile = e.target.files[0]
-        }
+        },
+        changePass: function () {
+            this.$router.push({ name: `changepass`, params: { id: 'user' }});
+        },
     },
 };
 </script>
 <style scoped>
 @import url(https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha1/dist/css/bootstrap.min.css);
 
+.change-pass-user{
+    color: #0d5dd5;
+    cursor: pointer;
+}
 .confirmed-wrap{
     display: flex;
     justify-content: center;
