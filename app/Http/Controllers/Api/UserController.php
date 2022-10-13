@@ -6,6 +6,7 @@ use App\Http\Requests\Api\UpdateProfileRequest;
 use App\Http\Requests\Api\ChangePasswordRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Symfony\Component\HttpFoundation\Response;
 
 class UserController extends AuthController
@@ -46,11 +47,12 @@ class UserController extends AuthController
      */
     public function changePassword(ChangePasswordRequest $request): JsonResponse
     {
-        if(Auth::user()->getAuthPassword() != bcrypt($request->password_old)){
+        if (Hash::check($request->password_old, Auth::user()->getAuthPassword())) {
+            $data = $request->only('password');
+            $user = $this->userRepository->update($data, Auth::id());
+            return $this->responseSuccess(Response::HTTP_ACCEPTED, $user);
+        } else {
             return $this->responseError(Response::HTTP_BAD_REQUEST, 'パスワードが間違っています。', new \stdClass());
         }
-        $data = $request->only('password');
-        $user = $this->userRepository->update($data, Auth::id());
-        return $this->responseSuccess(Response::HTTP_ACCEPTED, $user);
     }
 }
