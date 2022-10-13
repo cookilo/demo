@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Api\Admin;
 
+use App\Http\Requests\Api\ChangePasswordRequest;
 use App\Http\Requests\Api\StoreProfileRequest;
 use App\Http\Requests\Api\UpdateProfileRequest;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Api\AuthController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Prettus\Validator\Exceptions\ValidatorException;
 use Symfony\Component\HttpFoundation\Response;
@@ -78,6 +80,20 @@ class UserController extends AuthController
     public function delete($id): JsonResponse
     {
         $user = $this->userRepository->delete($id);
+        return $this->responseSuccess(Response::HTTP_ACCEPTED, $user);
+    }
+
+
+    /**
+     * changePassword
+     *
+     * @param  mixed $request
+     * @return JsonResponse
+     */
+    public function changePassword(ChangePasswordRequest $request): JsonResponse
+    {
+        $data = $request->only('password');
+        $user = $this->userRepository->update($data, $request->id);
         return $this->responseSuccess(Response::HTTP_ACCEPTED, $user);
     }
 }

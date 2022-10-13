@@ -4,7 +4,7 @@ namespace App\Http\Requests\Api;
 
 use App\Http\Requests\BaseRequest;
 
-class StoreProfileRequest extends BaseRequest
+class ChangePasswordRequest extends BaseRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,13 +24,7 @@ class StoreProfileRequest extends BaseRequest
     public function rules(): array
     {
         return [
-            'name'                  => 'required|string',
-            'email'                 => 'required|string|email|unique:users',
-            'post_code'             => 'nullable|integer',
-            'salary'                => 'nullable|integer',
-            'avatar'                => 'nullable|mimes:jpeg,jpg,png,jpeg,gif|max:10000',
-            'date_of_birth'         => 'nullable|date_format:Y-m-d|before:today',
-            'password'              => 'required|confirmed|min:6'
+            'password' => 'required|confirmed|min:6',
         ];
     }
 
@@ -38,7 +32,7 @@ class StoreProfileRequest extends BaseRequest
     {
         return [
             'password.required' => 'パスワードが空白にするのができません。',
-            'password.min' => 'パスワードには8文字以上が含まれている必要となります。',
+            'password.min' => 'パスワードには6文字以上が含まれている必要となります。',
             'password.confirmed' => 'パスワード確認が一致しません',
         ];
     }

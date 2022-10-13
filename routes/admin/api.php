@@ -21,5 +21,6 @@ Route::group(['middleware' => 'jwt_auth'], function () {
         Route::put('profile/{id}', [UserController::class, 'update']);
         Route::post('profile', [UserController::class, 'store']);
         Route::delete('profile/{id}', [UserController::class, 'delete']);
+        Route::post('change-password/{id}', [UserController::class, 'changePassword']);
     });
 });

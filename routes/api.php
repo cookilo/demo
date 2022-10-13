@@ -24,5 +24,6 @@ Route::group(['middleware' => 'jwt_auth'], function () {
     Route::group(['middleware' => ['role:user']], function () {
         Route::get('profile', [UserController::class, 'show']);
         Route::put('profile', [UserController::class, 'update']);
+        Route::post('change-password', [UserController::class, 'changePassword']);
     });
 });
