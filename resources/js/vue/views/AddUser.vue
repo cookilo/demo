@@ -2,6 +2,7 @@
 import { Form, Field, ErrorMessage, errors } from 'vee-validate';
 import { addUser, getUsers, changeDate } from "../api/user";
 import * as yup from 'yup';
+import sww from 'sweetalert2';
 const schema = yup.object({
     name: yup.string().required(),
     email: yup.string().required('メールアドレスは必須です').email('形式はメールです'),
@@ -128,6 +129,9 @@ const schema = yup.object({
                     <button class="btn btn-primary profile-button ml-5">
                         保存
                     </button>
+                </div>
+                <div v-if="messErr" class="mess-err-add mt-3 text-center">
+                    <div v-for="err,i in messErr" :key="i" class="mes-err">{{err}}</div>
                 </div>
             </div>
         </div>
