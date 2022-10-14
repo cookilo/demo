@@ -65,7 +65,7 @@ const schema = yup.object({
                     @change="ComfirmPassword()"
                 />
 
-                <button v-on:click="resetPass()" type="submit" class="btn btn-primary btn-block btn-large">reset</button>
+                <button v-on:click="resetPass()" type="submit" class="btn btn-primary btn-block btn-large">確認</button>
         </div>
         </Form>
 

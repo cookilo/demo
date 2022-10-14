@@ -29,7 +29,7 @@ const schema = yup.object({
                             <img ref_for="avatar" v-if="this.$store.state.profileUser.avatar" class="rounded-circle mt-5" width="150px"
                                 :src="`${api_endpoint}/storage/${this.$store.state.profileUser.avatar}`" />
                             <span class="text-black-50">{{this.$store.state.profileUser.email}}</span>
-                            <span class="change-pass-user" @click="changePass()">changepass</span>
+                            <span class="change-pass-user" @click="changePass()">パスワードを変更する</span>
                         </div>
                     </div>
                     <div class="col-md-5 border-right">
@@ -45,11 +45,26 @@ const schema = yup.object({
                                     placeholder="氏名入力" v-model="body.name" />
                             </div>
                             <div class="col-md-12">
+                                <label for="address" :class="{'none-active-input':this.$store.state.profileUser.confirmed !==0}" class="labels">住所</label>
+                                <!-- <span class="err-mess-validate">*</span><ErrorMessage class="err-mess-validate ml-3" name="address" /> -->
+                                <Field as="textarea" name="address" type="text" :class="{'none-active-input':this.$store.state.profileUser.confirmed !==0}"
+                                    class="form-control"
+                                    placeholder="住所を入力してください。"
+                                    v-model="body.address" id="address" />
+                            </div>
+                            <div class="col-md-12">
                                 <label for="post_code" :class="{'none-active-input':this.$store.state.profileUser.confirmed !==0}" class="labels">郵便番号</label>
                                 <!-- <span class="err-mess-validate">*</span> -->
                                 <ErrorMessage class="err-mess-validate ml-3" name="post_code" as="span">{{ErrorMessage?'郵便番号は数字で整数です。':''}}</ErrorMessage>
                                 <Field id="post_code" name="post_code" type="text" :class="{'none-active-input':this.$store.state.profileUser.confirmed !==0}"
                                 class="form-control" placeholder="郵便番号を入力" v-model="body.post_code" />
+                            </div>
+                            <div class="col-md-12">
+                                <label for="date_of_birth" :class="{'none-active-input':this.$store.state.profileUser.confirmed !==0}" class="labels">生年月日</label>
+                                <Datepicker locale="ja" autoApply :enableTimePicker="false"  :maxDate="new Date()"
+                                            v-model="body.date_of_birth"
+                                            :class="{'none-active-input':this.$store.state.profileUser.confirmed !==0}">
+                                </Datepicker>
                             </div>
                             <div class="col-md-12">
                                 <label for="salary" class="labels none-active-input">給料</label>
@@ -64,21 +79,7 @@ const schema = yup.object({
                                 </div>
 
                             </div>
-                            <div class="col-md-12">
-                                <label for="date_of_birth" :class="{'none-active-input':this.$store.state.profileUser.confirmed !==0}" class="labels">生年月日</label>
-                                <Datepicker autoApply :enableTimePicker="false"  :maxDate="new Date()"
-                                            v-model="body.date_of_birth"
-                                            :class="{'none-active-input':this.$store.state.profileUser.confirmed !==0}">
-                                </Datepicker>
-                            </div>
-                            <div class="col-md-12">
-                                <label for="address" :class="{'none-active-input':this.$store.state.profileUser.confirmed !==0}" class="labels">住所</label>
-                                <!-- <span class="err-mess-validate">*</span><ErrorMessage class="err-mess-validate ml-3" name="address" /> -->
-                                <Field as="textarea" name="address" type="text" :class="{'none-active-input':this.$store.state.profileUser.confirmed !==0}"
-                                    class="form-control"
-                                    placeholder="住所を入力してください。"
-                                    v-model="body.address" id="address" />
-                            </div>
+                            
                             <div class="col-md-12">
                                 <label for="avatar" :class="{'none-active-input':this.$store.state.profileUser.confirmed !==0}" class="labels">アバター</label>
                                 <input  id="avatar" @change="onFileSelected" name="avatar"
@@ -198,6 +199,7 @@ export default {
 .change-pass-user{
     color: #0d5dd5;
     cursor: pointer;
+    font-size: 13px;
 }
 .confirmed-wrap{
     display: flex;
