@@ -40,6 +40,7 @@ class StoreProfileRequest extends BaseRequest
             'password.required' => 'パスワードが空白にするのができません。',
             'password.min' => 'パスワードには8文字以上が含まれている必要となります。',
             'password.confirmed' => 'パスワード確認が一致しません',
+            'email.unique' => '指定のメールアドレスは既に使用されています。',
         ];
     }
 }
