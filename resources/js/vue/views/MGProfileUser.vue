@@ -164,7 +164,8 @@ export default {
                 if(data.status ==='error'){
                     sww.fire({
                         icon: 'error',
-                        title: 'エラーが発生しました。もう一度ご確認ください。'
+                        title: 'エラーが発生しました。もう一度ご確認ください。',
+                        confirmButtonText: '確認',
                     })
                 }
             })
