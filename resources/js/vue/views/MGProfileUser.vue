@@ -167,6 +167,10 @@ export default {
                     getUsers().then(data => {
                         this.$store.state.users = data.data.data
                         this.$router.replace({ name: "manageruser" });
+                        sww.fire({
+                            icon: 'success',
+                            title: '更新成功'
+                        })
                     })
                 }
                 if(data.status ==='error'){

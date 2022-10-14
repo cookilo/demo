@@ -63,10 +63,11 @@ export default {
             sessionStorage.setItem("tk", '');
         },
         login() {
+            this.messErr = '';
             if (this.input.username != "" && this.input.password != "") {
                 singin(this.input.username, this.input.password).then((data) => {
                     if (data.code !== 202) {
-                        this.messErr = data.message;
+                        this.messErr = 'メールアドレス、パスワードのいずれかが間違っています。';
                     }
                     if (data) {
                         if (data.data.user) {
@@ -98,7 +99,7 @@ export default {
                     }
                 });
             } else {
-                console.log("A username and password must be present");
+                this.messErr = 'メールアドレスとパスワードを入力してください';
             }
         },
     },

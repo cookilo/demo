@@ -4,7 +4,7 @@ import { addUser, getUsers, changeDate } from "../api/user";
 import * as yup from 'yup';
 const schema = yup.object({
     name: yup.string().required(),
-    email: yup.string().required().email(),
+    email: yup.string().required('メールアドレスは必須です').email('形式はメールです'),
     password: yup.string().required().min(6),
     password_confirmation: yup.string().required().min(6),
     address: yup.string().required(),
@@ -42,7 +42,8 @@ const schema = yup.object({
                             <div class="col-md-12">
                                 <label for="email" class="labels">メールアドレス</label>
                                 <span class="err-mess-validate">*</span>
-                                <ErrorMessage class="err-mess-validate ml-3" name="email" as="span">{{ErrorMessage?'メールアドレスは必須です。':''}}</ErrorMessage>
+                                <!-- <ErrorMessage class="err-mess-validate ml-3" name="email" as="span">{{ErrorMessage?'メールアドレスは必須です。':''}}</ErrorMessage> -->
+                                <ErrorMessage class="err-mess-validate ml-3" name="email" as="span" />
                                 <Field id="email" type="text" class="form-control" name="email" placeholder="メールアドレスを入力してください。" v-model="body.email" />
                             </div>
                             <div class="col-md-12">
@@ -70,7 +71,7 @@ const schema = yup.object({
                             <div class="col-md-12">
                                 <label for="post_code" class="labels">郵便番号は数字で正数です。</label>
                                 <!-- <span class="err-mess-validate">*</span> -->
-                                <ErrorMessage class="err-mess-validate ml-3" name="post_code" as="span">{{ErrorMessage?'郵便番号は数字で整数です。':''}}</ErrorMessage>
+                                <!-- <ErrorMessage class="err-mess-validate ml-3" name="post_code" as="span">{{ErrorMessage?'郵便番号は数字で整数です。':''}}</ErrorMessage> -->
                                 <Field id="post_code" name="post_code" type="text"
                                     class="form-control" placeholder="郵便番号を入力してください。" v-model="body.post_code" />
                             </div>

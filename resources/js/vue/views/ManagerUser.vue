@@ -47,9 +47,7 @@ export default {
 
     },
     mounted() {
-        console.log('+++++++++++++++++++++++');
         if (!this.$store.state.authenticated) {
-            console.log('--------------------');
             this.$router.replace({ name: "home" });
         }
     },
@@ -62,7 +60,10 @@ export default {
             })
         },
         changePass: function (id) {
-            this.$router.push({ name: `changepass`, params: { id: id }});
+            getUserProfileByID(id).then(data => {
+                this.$store.state.profileUserByID = data.data
+                this.$router.push({ name: `changepass`, params: { id: id }});
+            })
         },
 
         addUser: function () {

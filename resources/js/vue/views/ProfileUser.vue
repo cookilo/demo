@@ -29,7 +29,7 @@ const schema = yup.object({
                             <img ref_for="avatar" v-if="this.$store.state.profileUser.avatar" class="rounded-circle mt-5" width="150px"
                                 :src="`${api_endpoint}/storage/${this.$store.state.profileUser.avatar}`" />
                             <span class="text-black-50">{{this.$store.state.profileUser.email}}</span>
-                            <span class="change-pass-user" @click="changePass()">パスワードを変更する</span>
+                            <button class="btn btn-primary profile-button ml-3" @click="changePass()">パスワードを変更する</button>
                         </div>
                     </div>
                     <div class="col-md-5 border-right">
@@ -72,7 +72,7 @@ const schema = yup.object({
                                 <ErrorMessage class="err-mess-validate ml-3" name="salary" as="span">{{ErrorMessage?'給料は数字で整数です。':''}}</ErrorMessage>
                                 <div class="input-group mb-3">
                                     <Field id="salary" name="salary" type="text"
-                                        class="form-control none-active-input" placeholder="給料" :value="body.salary" />
+                                        class="form-control none-active-input read-only" placeholder="給料" :value="body.salary" />
                                     <div class="input-group-append">
                                         <span class="input-group-text">¥</span>
                                     </div>
@@ -113,7 +113,7 @@ const schema = yup.object({
                                 <!-- <span class="err-mess-validate">*</span>
                                 <ErrorMessage class="err-mess-validate ml-3" name="contract" /> -->
                                 <Field as="textarea" name="contract" type="text"
-                                    class="form-control labo none-active-input" placeholder="契約内容を入力"
+                                    class="form-control labo none-active-input read-only" placeholder="契約内容を入力"
                                     id="contract"
                                     :value="contract"
                                     />
@@ -196,6 +196,9 @@ export default {
 <style scoped>
 @import url(https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha1/dist/css/bootstrap.min.css);
 
+.read-only{
+    background-color: #efefef;
+}
 .change-pass-user{
     color: #0d5dd5;
     cursor: pointer;
