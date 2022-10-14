@@ -23,6 +23,19 @@ class LoginRequest extends BaseRequest
      */
     public function rules(): array
     {
-        return [];
+        return [
+            'email'    => 'required|email',
+            'password' => 'required|min:6',
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'email.required' => '電話番号を入力してください。',
+            'email.email' => '電話番号を入力してください。',
+            'password.required' => 'パスワードが空白にするのができません。',
+            'password.min' => 'パスワードには6文字以上が含まれている必要となります。',
+        ];
     }
 }
