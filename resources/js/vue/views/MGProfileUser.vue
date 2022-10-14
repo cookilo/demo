@@ -5,7 +5,7 @@ import * as yup from 'yup';
 import sww from 'sweetalert2';
 const schema = yup.object({
     name: yup.string().required(),
-    post_code: yup.string().matches(/^[0-9]+$/, "Must be only digits").min(6).max(6),
+    post_code: yup.string().matches(/^[0-9]+$/, "Must be only digits").min(7).max(7),
     salary: yup.number().positive(),
 });
 const api_endpoint = process.env.MIX_API_URL;
@@ -39,7 +39,7 @@ const api_endpoint = process.env.MIX_API_URL;
                             <div class="col-md-12">
                                 <label for="post_code" class="labels">郵便番号</label>
                                 <!-- <span class="err-mess-validate">*</span> -->
-                                <ErrorMessage class="err-mess-validate ml-3" name="post_code" as="span">{{ErrorMessage?'郵便番号は数字で整数です。':''}}</ErrorMessage>
+                                <ErrorMessage class="err-mess-validate ml-3" name="post_code" as="span">{{ErrorMessage?'郵便番号は7桁の番号です。':''}}</ErrorMessage>
                                 <Field id="post_code" name="post_code" type="text" class="form-control"
                                     placeholder="郵便番号を入力" v-model="body.post_code" />
                             </div>
