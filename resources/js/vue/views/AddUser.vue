@@ -8,7 +8,7 @@ const schema = yup.object({
     password: yup.string().required().min(6),
     password_confirmation: yup.string().required().min(6),
     // address: yup.string().required(),
-    post_code: yup.number().positive(),
+    post_code: yup.string().matches(/^[0-9]+$/, "Must be only digits").min(6).max(6),
     salary: yup.number().positive(),
     // proficiency: yup.string().required(),
     // contract: yup.string().required(),
@@ -29,7 +29,7 @@ const schema = yup.object({
                     <div class="col-md-5 border-right">
                         <div class="p-3 py-5">
                             <div class="d-flex justify-content-between align-items-center mb-3">
-                                <h4 class="text-right">プロファイル設定</h4>
+                                <h4 class="text-right">プロファイル設定 </h4>
                             </div>
                             <div class="row mt-3">
                                 <div class="col-md-12">
@@ -63,7 +63,7 @@ const schema = yup.object({
                                 <div class="col-md-12">
                                     <label for="post_code" class="labels">郵便番号</label>
                                     <!-- <span class="err-mess-validate">*</span> -->
-                                    <ErrorMessage class="err-mess-validate ml-3" name="post_code" as="span">{{ErrorMessage?'郵便番号は数字で整数です。':''}}</ErrorMessage>
+                                    <ErrorMessage class="err-mess-validate ml-3" name="post_code" as="span">{{ErrorMessage?'郵便番号は6桁の番号です。':''}}</ErrorMessage>
                                     <!-- <ErrorMessage class="err-mess-validate ml-3" name="post_code" as="span" /> -->
                                     <Field id="post_code" name="post_code" type="text"
                                         class="form-control" placeholder="郵便番号を入力してください。" v-model="body.post_code" />
