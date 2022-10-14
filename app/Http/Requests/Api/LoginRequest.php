@@ -19,10 +19,10 @@ class LoginRequest extends BaseRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return bool
+     * @return array
      */
-    public function rules(): bool
+    public function rules(): array
     {
-        return true;
+        return [];
     }
 }
