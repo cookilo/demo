@@ -36,7 +36,7 @@ const schema = yup.object({
                                     <span class="err-mess-validate">*</span>
                                     <ErrorMessage class="err-mess-validate ml-3" as="span" name="name" >{{ErrorMessage?'氏名は必須です。':''}}</ErrorMessage>
                                     <Field id="name" name="name" type="text" class="form-control"
-                                        placeholder="氏名入力" v-model="body.name" />
+                                        placeholder="氏名を入力してください。" v-model="body.name" />
                                 </div>
                                 <div class="col-md-12">
                                     <label for="email" class="labels">メールアドレス</label>
@@ -49,15 +49,15 @@ const schema = yup.object({
                                     <span class="err-mess-validate">*</span>
                                     <ErrorMessage class="err-mess-validate ml-3" name="password" as="span">{{ErrorMessage?'パスワードは6文字以上で必要です。':''}}</ErrorMessage>
                                     <Field id="password" name="password" type="password" @change="ComfirmPassword()"
-                                        class="form-control" placeholder="パスワードを入力してください。" v-model="body.password" />
+                                        class="form-control" placeholder="新しいパスワードを再入力してください。" v-model="body.password" />
                                 </div>
                                 <div class="col-md-12">
-                                    <label for="password_confirmation" class="labels">パスワード確認</label>
+                                    <label for="password_confirmation" class="labels">パスワードを再入力してください。</label>
                                     <span class="err-mess-validate">*</span>
                                     <span v-if="passErr" class="err-mess-validate ml-3">パスワードを再度ご確認ください。</span>
                                     <ErrorMessage class="err-mess-validate ml-3" name="password_confirmation" as="span">{{ErrorMessage?'パスワードは6文字以上で必要です。':''}}</ErrorMessage>
                                     <Field id="password_confirmation" name="password_confirmation" type="password" @change="ComfirmPassword()"
-                                        class="form-control" placeholder="パスワード確認" v-model="body.password_confirmation" />
+                                        class="form-control" placeholder="パスワードを再入力してください。" v-model="body.password_confirmation" />
                                 </div>
                                 <div class="col-md-12">
                                     <label for="post_code" class="labels">郵便番号</label>
@@ -65,7 +65,7 @@ const schema = yup.object({
                                     <ErrorMessage class="err-mess-validate ml-3" name="post_code" as="span">{{ErrorMessage?'郵便番号は7桁の番号です。':''}}</ErrorMessage>
                                     <!-- <ErrorMessage class="err-mess-validate ml-3" name="post_code" as="span" /> -->
                                     <Field id="post_code" name="post_code" type="text"
-                                        class="form-control" placeholder="郵便番号を入力してください。" v-model="body.post_code" />
+                                        class="form-control" placeholder="郵便番号を入力してください。してください。" v-model="body.post_code" />
                                 </div>
                                 <div class="col-md-12">
                                     <label for="address" class="labels">住所</label>
@@ -110,13 +110,13 @@ const schema = yup.object({
                             <div class="col-md-12">
                                 <label for="proficiency" class="labels">プロフィシェンシー</label>
                                 <Field as="textarea" name="proficiency" id="proficiency" type="text"
-                                    class="form-control skill" placeholder="習熟度を入力" v-model="body.proficiency" />
+                                    class="form-control skill" placeholder="習熟度を入力してください。" v-model="body.proficiency" />
                             </div>
                             <br />
                             <div class="col-md-12">
                                 <label for="contract" class="labels">詳細契約</label>
                                 <Field as="textarea" name="contract" id="contract" type="text"
-                                    class="form-control labo" placeholder="契約内容を入力" v-model="body.contract" />
+                                    class="form-control labo" placeholder="契約内容を入力してください。" v-model="body.contract" />
                             </div>
                         </div>
                     </div>

@@ -46,7 +46,7 @@ const schema = yup.object({
                             </div>
 
                             <div class="col-md-12">
-                                <label class="labels" for="new_password">新しいパスワード</label>
+                                <label class="labels" for="new_password">新しいパスワードを入力してください。</label>
                                 <span class="err-mess-validate">*</span>
                                 <ErrorMessage class="err-mess-validate ml-3" name="new_password" as="span">{{ErrorMessage?'パスワードは6文字以上で必要です。':''}}</ErrorMessage>
                                 <Field
@@ -55,14 +55,14 @@ const schema = yup.object({
                                     id="new_password"
                                     type="password"
                                     name="new_password"
-                                    placeholder="新しいパスワード"
+                                    placeholder="新しいパスワードを入力してください。"
                                     v-model="body.new_password"
                                     @change="ComfirmPassword()"
                                 />
                             </div>
 
                             <div class="col-md-12">
-                                <label class="labels" for="password_confirmation">パスワード</label>
+                                <label class="labels" for="password_confirmation">新しいパスワード　確認のため再入力</label>
                                 <span class="err-mess-validate">*</span>
                                 <span v-if="passErr" class="err-mess-validate ml-3">パスワードを再度ご確認ください。</span>
                                 <ErrorMessage class="err-mess-validate ml-3" name="password_confirmation" as="span">{{ErrorMessage?'パスワードは6文字以上で必要です。':''}}</ErrorMessage>
@@ -72,7 +72,7 @@ const schema = yup.object({
                                     id="password_confirmation"
                                     type="password"
                                     name="password_confirmation"
-                                    placeholder="パスワードを入力してください。"
+                                    placeholder="新しいパスワードを再入力してください。"
                                     v-model="body.password_confirmation"
                                     @change="ComfirmPassword()"
                                 />

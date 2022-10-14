@@ -34,14 +34,14 @@ const api_endpoint = process.env.MIX_API_URL;
                                 <label for="name" class="labels">氏名</label><span class="err-mess-validate">*</span>
                                 <ErrorMessage class="err-mess-validate ml-3" name="name" as="span">{{ErrorMessage?'氏名は必須です。':''}}</ErrorMessage>
                                 <Field id="name" name="name" type="text" class="form-control"
-                                    placeholder="氏名入力" v-model="body.name" />
+                                    placeholder="氏名を入力してください。" v-model="body.name" />
                             </div>
                             <div class="col-md-12">
                                 <label for="post_code" class="labels">郵便番号</label>
                                 <!-- <span class="err-mess-validate">*</span> -->
                                 <ErrorMessage class="err-mess-validate ml-3" name="post_code" as="span">{{ErrorMessage?'郵便番号は7桁の番号です。':''}}</ErrorMessage>
                                 <Field id="post_code" name="post_code" type="text" class="form-control"
-                                    placeholder="郵便番号を入力" v-model="body.post_code" />
+                                    placeholder="郵便番号を入力してください。" v-model="body.post_code" />
                             </div>
                             <div class="col-md-12">
                                 <label for="address" class="labels">住所</label>
@@ -83,13 +83,13 @@ const api_endpoint = process.env.MIX_API_URL;
                             <div class="col-md-12">
                                 <label for="proficiency" class="labels">プロフィシェンシー</label>
                                 <Field as="textarea" name="proficiency" id="proficiency" type="text"
-                                    class="form-control skill" placeholder="習熟度を入力" v-model="body.proficiency" />
+                                    class="form-control skill" placeholder="習熟度を入力してください。" v-model="body.proficiency" />
                             </div>
                             <br />
                             <div class="col-md-12">
                                 <label for="contract" class="labels">詳細契約</label>
                                 <Field as="textarea" id="contract" name="contract"
-                                    type="text" class="form-control labo" placeholder="契約内容を入力"
+                                    type="text" class="form-control labo" placeholder="契約内容を入力してください。"
                                     v-model="body.contract" />
                             </div>
                         </div>
