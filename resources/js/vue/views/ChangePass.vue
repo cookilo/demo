@@ -106,7 +106,8 @@ export default {
                     this.$router.replace({ name: "manageruser" });
                     sww.fire({
                         icon: 'success',
-                        title: 'パスワード変更済み'
+                        title: 'パスワード変更済み',
+                        confirmButtonText: '確認',
                     })
                 }
             })

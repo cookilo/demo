@@ -6,19 +6,12 @@ import sww from 'sweetalert2';
 const api_endpoint = process.env.MIX_API_URL;
 const schema = yup.object({
     name: yup.string().required(),
-    email: yup.string().required().email(),
-    password: yup.string().required().min(6),
-    password_confirmation: yup.string().required().min(6),
-    address: yup.string().required(),
-    post_code: yup.number().positive(),
-    salary: yup.number().positive(),
-    proficiency: yup.string().required(),
-    contract: yup.string().required(),
+    post_code: yup.string().matches(/^[0-9]+$/, "Must be only digits").min(6).max(6),
 });
 </script>
 
 <template>
-    <Form :validation-schema="schema">
+    <Form @submit="updateUserByUser" :validation-schema="schema">
         <div class="secure">
             <div class="container rounded bg-white mt-5 mb-5">
                 <div class="row">
@@ -47,7 +40,7 @@ const schema = yup.object({
                             <div class="col-md-12">
                                 <label for="post_code" :class="{'none-active-input':this.$store.state.profileUser.confirmed !==0}" class="labels">郵便番号</label>
                                 <!-- <span class="err-mess-validate">*</span> -->
-                                <ErrorMessage class="err-mess-validate ml-3" name="post_code" as="span">{{ErrorMessage?'郵便番号は数字で整数です。':''}}</ErrorMessage>
+                                <ErrorMessage class="err-mess-validate ml-3" name="post_code" as="span">{{ErrorMessage?'郵便番号は6桁の番号です。':''}}</ErrorMessage>
                                 <Field id="post_code" name="post_code" type="text" :class="{'none-active-input':this.$store.state.profileUser.confirmed !==0}"
                                 class="form-control" placeholder="郵便番号を入力" v-model="body.post_code" />
                             </div>
@@ -68,8 +61,6 @@ const schema = yup.object({
                             </div>
                             <div class="col-md-12">
                                 <label for="salary" class="labels none-active-input">給料</label>
-                                <!-- <span class="err-mess-validate">*</span> -->
-                                <ErrorMessage class="err-mess-validate ml-3" name="salary" as="span">{{ErrorMessage?'給料は数字で整数です。':''}}</ErrorMessage>
                                 <div class="input-group mb-3">
                                     <Field id="salary" name="salary" type="text"
                                         class="form-control none-active-input read-only" placeholder="給料" :value="body.salary" />
@@ -100,7 +91,6 @@ const schema = yup.object({
                             <div class="col-md-12">
                                 <label for="proficiency" :class="{'none-active-input':this.$store.state.profileUser.confirmed !==0}"
                                     class="labels">プロフィシェンシー</label>
-                                    <!-- <span class="err-mess-validate">*</span><ErrorMessage class="err-mess-validate ml-3" name="proficiency" /> -->
                                     <Field as="textarea" name="proficiency" type="text"
                                         :class="{'none-active-input':this.$store.state.profileUser.confirmed !==0}"
                                         class="form-control skill"
@@ -110,8 +100,6 @@ const schema = yup.object({
                             <br />
                             <div class="col-md-12">
                                 <label for="contract" class="labels none-active-input">詳細契約</label>
-                                <!-- <span class="err-mess-validate">*</span>
-                                <ErrorMessage class="err-mess-validate ml-3" name="contract" /> -->
                                 <Field as="textarea" name="contract" type="text"
                                     class="form-control labo none-active-input read-only" placeholder="契約内容を入力"
                                     id="contract"
@@ -125,7 +113,7 @@ const schema = yup.object({
                 <div v-if="this.$store.state.profileUser.confirmed===0" class="mt-5 confirmed-wrap">
                     <label for="confirmed">検証</label>
                     <input class="cfm-au" type="checkbox" name="confirmed" id="confirmed" v-model="body.confirmed">
-                    <button @click="updateUserByUser()" class="btn btn-primary profile-button ml-3" type="button">
+                    <button class="btn btn-primary profile-button ml-3" type="submit" value="Submit">
                         保存
                     </button>
                 </div>
@@ -174,12 +162,14 @@ export default {
                 if(data_update.status === 'error' || data_update.status === 500){
                     sww.fire({
                         icon: 'error',
-                        title: 'エラーが発生しました。もう一度ご確認ください。'
+                        title: 'エラーが発生しました。もう一度ご確認ください。',
+                        confirmButtonText: '確認',
                     })
                 }
                 if(data_update.status === true) {
                         sww.fire({
-                        title: 'プロファイルが保存されました。'
+                        title: 'プロファイルが保存されました。',
+                        confirmButtonText: '確認',
                     })
                 }
             })

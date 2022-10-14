@@ -5,20 +5,14 @@ import * as yup from 'yup';
 import sww from 'sweetalert2';
 const schema = yup.object({
     name: yup.string().required(),
-    email: yup.string().required().email(),
-    password: yup.string().required().min(6),
-    password_confirmation: yup.string().required().min(6),
-    address: yup.string().required(),
-    post_code: yup.number().positive(),
+    post_code: yup.string().matches(/^[0-9]+$/, "Must be only digits").min(6).max(6),
     salary: yup.number().positive(),
-    proficiency: yup.string().required(),
-    contract: yup.string().required(),
 });
 const api_endpoint = process.env.MIX_API_URL;
 </script>
 
 <template>
-    <Form :validation-schema="schema">
+    <Form @submit="updateProfileUserbyIDAdmin(this.$store.state.profileUserByID.id)" :validation-schema="schema">
         <div class="secure">
             <div class="container rounded bg-white mt-5 mb-5">
                 <div class="row">
@@ -51,8 +45,6 @@ const api_endpoint = process.env.MIX_API_URL;
                             </div>
                             <div class="col-md-12">
                                 <label for="address" class="labels">住所</label>
-                                <!-- <span class="err-mess-validate">*</span>
-                                <ErrorMessage class="err-mess-validate ml-3" name="address" /> -->
                                 <Field as="textarea" name="address" id="address" type="text"
                                     class="form-control" placeholder="住所を入力してください。"
                                     v-model="body.address"></Field>
@@ -63,7 +55,6 @@ const api_endpoint = process.env.MIX_API_URL;
                             </div>
                             <div class="col-md-12">
                                 <label for="salary" class="labels">給料</label>
-                                <!-- <span class="err-mess-validate">*</span> -->
                                 <ErrorMessage class="err-mess-validate ml-3" name="salary" as="span">{{ErrorMessage?'給料は数字で整数です。':''}}</ErrorMessage>
                                 <div class="input-group mb-3">
                                     <Field id="salary" name="salary" type="text" class="form-control"
@@ -91,15 +82,12 @@ const api_endpoint = process.env.MIX_API_URL;
                             <br />
                             <div class="col-md-12">
                                 <label for="proficiency" class="labels">プロフィシェンシー</label>
-                                <!-- <span class="err-mess-validate">*</span><ErrorMessage class="err-mess-validate ml-3" name="proficiency" /> -->
                                 <Field as="textarea" name="proficiency" id="proficiency" type="text"
                                     class="form-control skill" placeholder="習熟度を入力" v-model="body.proficiency" />
                             </div>
                             <br />
                             <div class="col-md-12">
                                 <label for="contract" class="labels">詳細契約</label>
-                                <!-- <span class="err-mess-validate">*</span>
-                                <ErrorMessage class="err-mess-validate ml-3" name="contract" /> -->
                                 <Field as="textarea" id="contract" name="contract"
                                     type="text" class="form-control labo" placeholder="契約内容を入力"
                                     v-model="body.contract" />
@@ -112,8 +100,7 @@ const api_endpoint = process.env.MIX_API_URL;
                     <label v-if="this.$store.state.profileUserByID.confirmed == 0" for="confirmed">検証</label>
                     <label v-if="this.$store.state.profileUserByID.confirmed == 1" for="confirmed">未検証</label>
                     <input class="cfm-au" type="checkbox" name="confirmed" id="confirmed" v-model="body.confirmed">
-                    <button @click="updateProfileUserbyIDAdmin(this.$store.state.profileUserByID.id)"
-                        class="btn btn-primary profile-button ml-5" type="button">
+                    <button class="btn btn-primary profile-button ml-5" type="submit" value="Submit">
                         保存
                     </button>
                 </div>
@@ -169,14 +156,16 @@ export default {
                         this.$router.replace({ name: "manageruser" });
                         sww.fire({
                             icon: 'success',
-                            title: '更新成功'
+                            title: '更新成功',
+                            confirmButtonText: '確認',
                         })
                     })
                 }
                 if(data.status ==='error'){
                     sww.fire({
                         icon: 'error',
-                        title: 'エラーが発生しました。もう一度ご確認ください。'
+                        title: 'エラーが発生しました。もう一度ご確認ください。',
+                        confirmButtonText: '確認',
                     })
                 }
             })

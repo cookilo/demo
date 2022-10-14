@@ -2,6 +2,7 @@
 import { Form, Field, ErrorMessage, errors } from 'vee-validate';
 import { addUser, getUsers, changeDate } from "../api/user";
 import * as yup from 'yup';
+import sww from 'sweetalert2';
 const schema = yup.object({
     name: yup.string().required(),
     email: yup.string().required('メールアドレスは必須です').email('形式はメールです'),
@@ -10,8 +11,6 @@ const schema = yup.object({
     // address: yup.string().required(),
     post_code: yup.string().matches(/^[0-9]+$/, "Must be only digits").min(6).max(6),
     salary: yup.number().positive(),
-    // proficiency: yup.string().required(),
-    // contract: yup.string().required(),
 });
 </script>
 
@@ -129,6 +128,9 @@ const schema = yup.object({
                         保存
                     </button>
                 </div>
+                <!-- <div v-if="messErr" class="mess-err-add mt-3 text-center">
+                    <div v-for="err,i in messErr" :key="i" class="mes-err">{{err}}</div>
+                </div> -->
             </div>
         </div>
     </Form>
@@ -175,6 +177,7 @@ export default {
                 if(data.status === true){
                     sww.fire({
                             icon: 'success',
+                            confirmButtonText: '確認',
                             title: 'ユーザーの成功を追加'
                     })
                     this.$router.replace({ name: "manageruser" });
@@ -190,6 +193,14 @@ export default {
                         arrMesErr.push(...value)
                     }
                     this.messErr = arrMesErr;
+                    sww.fire({
+                        icon: 'error',
+                        title: arrMesErr,
+                        confirmButtonText: '確認',
+                        customClass: {
+                            title: 'title-sww-cus'
+                        }
+                    })
                 }
             })
         },
@@ -206,6 +217,11 @@ export default {
     },
 };
 </script>
+<style>
+    .title-sww-cus{
+        font-size: 20px !important;
+    }
+</style>
 <style scoped>
 @import url(https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha1/dist/css/bootstrap.min.css);
 
@@ -214,6 +230,7 @@ export default {
         width: 100% !important;
     }
 }
+
 
 .confirmed-wrap{
     display: flex;
