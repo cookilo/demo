@@ -47,11 +47,14 @@ export default {
 
     },
     mounted() {
+        console.log('+++++++++++++++++++++++');
         if (!this.$store.state.authenticated) {
+            console.log('--------------------');
             this.$router.replace({ name: "home" });
         }
     },
     methods: {
+        
         editProfileUserById: function (id) {
             getUserProfileByID(id).then(data => {
                 this.$store.state.profileUserByID = data.data
