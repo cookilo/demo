@@ -45,19 +45,19 @@ const schema = yup.object({
                                     placeholder="氏名入力" v-model="body.name" />
                             </div>
                             <div class="col-md-12">
+                                <label for="post_code" :class="{'none-active-input':this.$store.state.profileUser.confirmed !==0}" class="labels">郵便番号</label>
+                                <!-- <span class="err-mess-validate">*</span> -->
+                                <ErrorMessage class="err-mess-validate ml-3" name="post_code" as="span">{{ErrorMessage?'郵便番号は数字で整数です。':''}}</ErrorMessage>
+                                <Field id="post_code" name="post_code" type="text" :class="{'none-active-input':this.$store.state.profileUser.confirmed !==0}"
+                                class="form-control" placeholder="郵便番号を入力" v-model="body.post_code" />
+                            </div>
+                            <div class="col-md-12">
                                 <label for="address" :class="{'none-active-input':this.$store.state.profileUser.confirmed !==0}" class="labels">住所</label>
                                 <!-- <span class="err-mess-validate">*</span><ErrorMessage class="err-mess-validate ml-3" name="address" /> -->
                                 <Field as="textarea" name="address" type="text" :class="{'none-active-input':this.$store.state.profileUser.confirmed !==0}"
                                     class="form-control"
                                     placeholder="住所を入力してください。"
                                     v-model="body.address" id="address" />
-                            </div>
-                            <div class="col-md-12">
-                                <label for="post_code" :class="{'none-active-input':this.$store.state.profileUser.confirmed !==0}" class="labels">郵便番号</label>
-                                <!-- <span class="err-mess-validate">*</span> -->
-                                <ErrorMessage class="err-mess-validate ml-3" name="post_code" as="span">{{ErrorMessage?'郵便番号は数字で整数です。':''}}</ErrorMessage>
-                                <Field id="post_code" name="post_code" type="text" :class="{'none-active-input':this.$store.state.profileUser.confirmed !==0}"
-                                class="form-control" placeholder="郵便番号を入力" v-model="body.post_code" />
                             </div>
                             <div class="col-md-12">
                                 <label for="date_of_birth" :class="{'none-active-input':this.$store.state.profileUser.confirmed !==0}" class="labels">生年月日</label>
@@ -188,7 +188,7 @@ export default {
             this.selectedFile = e.target.files[0]
         },
         changePass: function () {
-            this.$router.push({ name: `changepass`, params: { id: 'user' }});
+            this.$router.push({ name: `changepassuser`});
         },
     },
 };

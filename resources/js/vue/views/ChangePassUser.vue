@@ -5,6 +5,7 @@ import * as yup from 'yup';
 import sww from 'sweetalert2';
 const api_endpoint = process.env.MIX_API_URL;
 const schema = yup.object({
+        old_password: yup.string().required().min(6),
         new_password: yup.string().required().min(6),
         password_confirmation: yup.string().required().min(6),
 
@@ -29,6 +30,21 @@ const schema = yup.object({
                             <div class="d-flex justify-content-between align-items-center mb-3">
                                 <h4 class="text-right">パスワードを変更する</h4>
                             </div>
+
+                            <div class="col-md-12">
+                                <label class="labels" for="old_password">以前のパスワード</label>
+                                <ErrorMessage class="err-mess-validate ml-3" name="old_password" as="span">{{ErrorMessage?'古いパスワードが必要です':''}}</ErrorMessage>
+                                <Field
+                                    as="input"
+                                    class="form-control"
+                                    id="old_password"
+                                    type="password"
+                                    name="old_password"
+                                    placeholder="以前のパスワード"
+                                    v-model="body.old_password"
+                                />
+                            </div>
+
                             <div class="col-md-12">
                                 <label class="labels" for="new_password">新しいパスワード</label>
                                 <span class="err-mess-validate">*</span>
@@ -94,22 +110,29 @@ export default {
         };
     },
     mounted() {
+        console.log(yup.object);
         if (!this.$store.state.authenticated) {
             this.$router.replace({ name: "home" });
         }
-        this.imforUser = this.$store.state.profileUserByID;
+        this.imforUser = this.$store.state.profileUser;
     },
     methods: {
         resetPass: function(){
-                changePassword(this.body,this.$route.params.id).then(data => {
-                if(data.status === true){
-                    this.$router.replace({ name: "manageruser" });
-                    sww.fire({
-                        icon: 'success',
-                        title: 'パスワード変更済み'
-                    })
-                }
-            })
+                changePasswordByUser(this.body). then(data => {
+                    if(data.status === true){
+                        this.$router.replace({ name: "profileuser" });
+                        sww.fire({
+                            icon: 'success',
+                            title: 'パスワード変更済み'
+                        })
+                    }
+                    if(data.status === false){
+                        sww.fire({
+                            icon: 'error',
+                            title: 'パスワードが間違っている'
+                        })
+                    }
+                })
         },
         ComfirmPassword(){
             if(this.body.new_password !== this.body.password_confirmation){

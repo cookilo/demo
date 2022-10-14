@@ -79,6 +79,10 @@ export default {
                     deleteUser(id).then(data => {
                         if(data.status === true){
                             getUsers().then(data => {
+                                sww.fire({
+                                    icon: 'success',
+                                    title: 'ユーザーの成功を削除'
+                                })
                                 this.$store.state.users = data.data.data
                             })
                         }
