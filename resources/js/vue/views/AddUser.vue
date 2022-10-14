@@ -11,8 +11,6 @@ const schema = yup.object({
     // address: yup.string().required(),
     post_code: yup.string().matches(/^[0-9]+$/, "Must be only digits").min(6).max(6),
     salary: yup.number().positive(),
-    // proficiency: yup.string().required(),
-    // contract: yup.string().required(),
 });
 </script>
 
@@ -179,6 +177,7 @@ export default {
                 if(data.status === true){
                     sww.fire({
                             icon: 'success',
+                            confirmButtonText: '確認',
                             title: 'ユーザーの成功を追加'
                     })
                     this.$router.replace({ name: "manageruser" });

@@ -73,7 +73,9 @@ export default {
         remoteUserByID: function(id){
             sww.fire({
                 title: 'ユーザーを削除しますか?',
-                showCancelButton: true
+                confirmButtonText: '確認',
+                cancelButtonText: 'キャンセル',
+                showCancelButton: true,
             }).then(r =>{
                 if(r.isConfirmed){
                     deleteUser(id).then(data => {
@@ -81,7 +83,8 @@ export default {
                             getUsers().then(data => {
                                 sww.fire({
                                     icon: 'success',
-                                    title: 'ユーザーの成功を削除'
+                                    title: 'ユーザーの成功を削除',
+                                    confirmButtonText: '確認',
                                 })
                                 this.$store.state.users = data.data.data
                             })
